@@ -1,0 +1,26 @@
+name: ${name}
+version: ${version}
+description: ${description}
+author: ${author}
+website: ${url}
+
+main: ${mainClass}
+
+commands:
+    admintools:
+        description: The main AdminTools command
+        permission: admintools.admintools
+        usage: "§6Usage: §c/admintools reload"
+        aliases: [jfadmintools, at, jfat]
+    fakejoin:
+        description: Shows the default join message for you or a given player
+        permission: admintools.fakejoin
+        usage: "§6Usage: §c/fakejoin [player]"
+        aliases: [jffakejoin]
+    fakeleave:
+        description: Shows the default leave message for you or a given player
+        permission: admintools.fakeleave
+        usage: "§6Usage: §c/fakeleave [player]"
+        aliases: [jffakeleave]
+
+permissions: {}

@@ -1,0 +1,4 @@
+debug: true
+messages:
+  join: '&6[&2+&6] &9%player%'
+  leave: '&6[&c-&6] &9%player%'
