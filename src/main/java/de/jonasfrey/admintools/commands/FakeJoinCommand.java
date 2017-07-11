@@ -24,10 +24,7 @@ public class FakeJoinCommand extends JFCommand {
             return false;
         }
         
-        String target = sender.getName();
-        if (args.length == 1) {
-            target = args[0];
-        }
+        String target = args.length == 1 ? args[0] : sender.getName();
         String msg = plugin.getConfig().getString("messages.join").replaceAll("%player%", target);
         plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', msg));
         

@@ -13,7 +13,7 @@ import org.bukkit.command.CommandSender;
 
 public abstract class JFCommand implements CommandExecutor {
 
-    AdminTools plugin;
+    protected AdminTools plugin;
 
     public JFCommand(AdminTools plugin) {
         this.plugin = plugin;
@@ -28,4 +28,5 @@ public abstract class JFCommand implements CommandExecutor {
         
         return true;
     }
+    
 }

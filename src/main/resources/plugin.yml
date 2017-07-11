@@ -3,24 +3,114 @@ version: ${version}
 description: ${description}
 author: ${author}
 website: ${url}
+softdepend: [McMMO, Essentials]
 
 main: ${mainClass}
 
 commands:
     admintools:
-        description: The main AdminTools command
+        description: Reloads the plugin
         permission: admintools.admintools
         usage: "§6Usage: §c/admintools reload"
-        aliases: [jfadmintools, at, jfat]
+        aliases: [at]
     fakejoin:
         description: Shows the default join message for you or a given player
         permission: admintools.fakejoin
         usage: "§6Usage: §c/fakejoin [player]"
-        aliases: [jffakejoin]
     fakeleave:
         description: Shows the default leave message for you or a given player
         permission: admintools.fakeleave
         usage: "§6Usage: §c/fakeleave [player]"
-        aliases: [jffakeleave]
+    ballot:
+        description: Let the users vote yes or no to a given topic
+        permission: admintools.ballot
+        usage: "§6Usage: §c/ballot < yes | no | topic | set | reset >"
+    fix:
+        description: Repair the durability of one or all items in your inventory
+        permission: admintools.fix
+        usage: "§6Usage: §c/fix [all]"
+    rainbow:
+        description: Broadcasts a message in all available colors
+        permission: admintools.rainbow
+        usage: "§6Usage: §c/rainbow <Message>"
+    votefly:
+        description: Gives a user the permission to fly for 10 minutes
+        permission: admintools.votefly
+        usage: "§6Usage: §c/votefly [player]"
+    playtime:
+        description: Get the time a user has played on this server
+        permission: admintools.playtime
+        usage: "§6Usage: §c/playtime < me | top | get | give | take | reset > [player] [time]"
+        aliases: [pt]
+    colors:
+        description: Lists all colors available with their color codes
+        permission: admintools.colors
+        usage: "§6Usage: §c/colors"
+    adminchat:
+        description: A chat room exclusively used by administrators and owners
+        permission: admintools.adminchat
+        usage: "§6Usage: §c/adminchat [Message]"
+        aliases: [ac, jfac]
+    teamchat:
+        description: A chat room exclusively used by the server team
+        permission: admintools.teamchat
+        usage: "§6Usage: §c/teamchat"
+        aliases: [tc]
+    privatechat:
+        description: "A chat room used to talk to a user privately outside of /msg"
+        permission: admintools.privatechat
+        usage: "§6Usage: §c/privatechat"
+        aliases: [pc]
+    kills:
+        description: Get the kills a user has made in SkyPvP
+        permission: admintools.kills
+        usage: "§6Usage: §c/kills < me | top | get | set > [player] [amount]"
+    spy:
+        description: See all commands executed by a player
+        permission: admintools.spy
+        usage: "§6Usage: §c/spy < get | remove | set > [player]"
+    leaveskypvp:
+        description: Return to the world spawn after waiting 10 seconds
+        permission: admintools.lsp
+        usage: "§6Usage: §c/lsp"
+        aliases: [lsp]
+    muteall:
+        description: Mute all players on the server. Use again to unmute
+        permission: admintools.muteall
+        usage: "§6Usage: §c/muteall"
+    insultfilter:
+        description: Modify the insults filter 
+        permission: admintools.insultfilter
+        usage: "§6Usage: §c/insultfilter < add | remove > <word>"
+    fastmessages:
+        description: Displays a predefined message
+        permission: admintools.fastmessages
+        usage: "§6Usage: §c/fastmessages < list | show | add | <name> > [name] [text]"
+        aliases: [fm]
+    showmessage:
+        description: Show raw text to a player
+        permission: admintools.showmessage
+        usage: "§6Usage: §c/showmessage <message>"
+    helpopreply:
+        description: Sends a formatted reply message to a user
+        permission: essentials.helpop.receive
+        usage: "§6Usage: §c/hr <player> <message>"
+        aliases: [hr]
+    friends:
+        description: Manage a list of your friends
+        permission: admintools.friends
+        usage: "§6Usage: §c/friends < list | add | remove > [player]"
+    checkenchantment:
+        description: "Check, if an item has been enchanted with /enchant. Output not guaranteed in both ways!"
+        permission: admintools.checkenchantment
+        usage: "§6Usage: §c/checkenchantment"
+    uuidforname:
+        description: Shows the UUID of a player
+        permission: admintools.uuidforname
+        usage: "§6Usage: §c/uuidforname <player>"
+    clearchat:
+        description: Spams the chat with empty lines
+        permission: admintools.clearchat
+        usage: "§6Usage: §c/clearchat"
 
 permissions: {}
