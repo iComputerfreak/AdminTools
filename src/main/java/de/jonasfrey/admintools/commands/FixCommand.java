@@ -7,19 +7,17 @@ package de.jonasfrey.admintools.commands;
 
 import de.jonasfrey.admintools.AdminTools;
 import de.jonasfrey.admintools.JFLiterals;
+import de.jonasfrey.admintools.JFUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Repairable;
 
 public class FixCommand extends JFCommand {
     
     public FixCommand(AdminTools plugin) {
         super(plugin);
     }
-    
-    // TODO: Fix command does not work: Item not repairable
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -67,7 +65,8 @@ public class FixCommand extends JFCommand {
      * @param item the pointer to the ItemStack
      */
     private boolean repairItem(ItemStack item) {
-        if (item instanceof Repairable) {
+        if (item == null) return false;
+        if (JFUtils.isRepairable(item.getType())) {
             item.setDurability((short) 0);
             return true;
         }

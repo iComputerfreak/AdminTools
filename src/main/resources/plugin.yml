@@ -3,7 +3,8 @@ version: ${version}
 description: ${description}
 author: ${author}
 website: ${url}
-softdepend: [McMMO, Essentials]
+depend: [Essentials, GroupManager]
+softdepend: [McMMO]
 
 main: ${mainClass}
 
