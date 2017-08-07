@@ -39,9 +39,9 @@ commands:
         permission: admintools.votefly
         usage: "§6Usage: §c/votefly [player]"
     playtime:
-        description: Get the time a user has played on this server
+        description: Get the time a user has played on this server and modify it
         permission: admintools.playtime
-        usage: "§6Usage: §c/playtime < me | top | get | give | take | reset > [player] [time]"
+        usage: "§6Usage: §c/playtime < me | top | get | set | reset > [player] [time]"
         aliases: [pt]
     colors:
         description: Lists all colors available with their color codes

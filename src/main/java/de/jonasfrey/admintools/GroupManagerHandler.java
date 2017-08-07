@@ -14,6 +14,7 @@ import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
  * @author Jonas Frey
  * @version 1.0, 07.08.17
  */
+
 public class GroupManagerHandler {
     
     private AdminTools plugin;

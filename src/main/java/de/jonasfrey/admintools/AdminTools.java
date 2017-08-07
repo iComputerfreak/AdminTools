@@ -1,16 +1,15 @@
 package de.jonasfrey.admintools;
 
-/**
- * @author Jonas Frey
- * @version 1.0, 10.07.17
- */
-
 import com.earth2me.essentials.Essentials;
 import de.jonasfrey.admintools.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * @author Jonas Frey
+ * @version 1.0, 10.07.17
+ */
 
 public class AdminTools extends JavaPlugin {
     
@@ -30,6 +29,7 @@ public class AdminTools extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         registerCommands();
         registerTimers();
     }
@@ -47,8 +47,8 @@ public class AdminTools extends JavaPlugin {
         getCommand("fix").setExecutor(new FixCommand(this));
         getCommand("rainbow").setExecutor(new RainbowCommand(this));
         getCommand("votefly").setExecutor(new VoteFlyCommand(this));
-        /*getCommand("playtime").setExecutor(new JFCommand(this));
-        getCommand("colors").setExecutor(new JFCommand(this));
+        getCommand("playtime").setExecutor(new PlaytimeCommand(this));
+        /*getCommand("colors").setExecutor(new JFCommand(this));
         getCommand("adminchat").setExecutor(new JFCommand(this));
         getCommand("teamchat").setExecutor(new JFCommand(this));
         getCommand("privatechat").setExecutor(new JFCommand(this));

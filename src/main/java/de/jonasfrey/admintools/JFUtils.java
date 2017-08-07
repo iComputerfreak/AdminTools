@@ -1,8 +1,11 @@
 package de.jonasfrey.admintools;
 
+import com.avaje.ebean.validation.NotNull;
+import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -160,5 +163,18 @@ public class JFUtils {
     public void execute(String cmd) {
         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd);
     }
+
+    public String getTimeString(int minutes) {
+        int hours = minutes / 60;
+        int newMinutes = minutes % 60;
+        return String.format("%02d:%02d", hours, newMinutes);
+    }
     
+    public @NotNull OfflinePlayer getOfflinePlayer(String name) throws JFUnknownPlayerException {
+        OfflinePlayer p = plugin.getServer().getOfflinePlayer(name);
+        if (p == null) {
+            throw new JFUnknownPlayerException(name);
+        }
+        return p;
+    }
 }

@@ -11,8 +11,10 @@ public abstract class JFLiterals {
     public static final String kGood = "§2";
     public static final String kBad = "§c";
     public static final String kCmd = "§d";
+    public static final String kSpecial = "§a";
     public static final String kPrefixGood = kPrefix + kGood;
     public static final String kPrefixBad = kPrefix + kBad;
+    public static final String kPrefixSpecial = kPrefix + kSpecial;
     
     public static final String kNoPermissionMessage = kPrefixBad + "You have no permissions to execute this command";
     public static final String kNoBallotRunning = kPrefixBad + "There is no ballot running at the moment.";
@@ -26,11 +28,37 @@ public abstract class JFLiterals {
     public static final String kVoteflyActivated = kPrefixGood + "You can now use " + kCmd + "/fly" + kGood + " for " + 
             JFLiterals.kVoteFlyDurationMinutes + " minutes";
     public static final String kVoteFlyDeactivated = kPrefixBad + "Your Vote Fly has been disabled. Your fly mode "
-            + "will be disabled in 10 seconds.";
+            + "will be disabled in " + kSpecial + "10 seconds.";
+    public static final String kPlaytimeTopHeader = "§a----- §6Top Ten §a-----";
 
     public static final int kVoteFlyDurationMinutes = 2;
-    
+    public static String kWrongTimeFormat = kBad + "Wrong time format. Please use <hours>:<minutes>";
+
     public static String voteResult(int yesVotes, int noVotes) {
-        return kPrefix + "§a" + yesVotes + " §2Players voted yes and §a" + noVotes + " §2Players voted no.";
+        return kPrefixSpecial + yesVotes + kGood + " Players voted yes and " + kSpecial + noVotes + kGood + " Players voted no.";
+    }
+
+    public static String playtimeMe(String timeString) {
+        return kPrefixGood + "You have played here for " + kSpecial + timeString + kGood + " hours.";
+    }
+
+    public static String playtimeGet(String playerName, String timeString) {
+        return kPrefixSpecial + playerName + kGood + " played here for " + kSpecial + timeString + kGood + " hours.";
+    }
+
+    public static String playtimeSet(String playerName, String timeString) {
+        return kPrefixGood + "The playtime of " + kSpecial + playerName + kGood + " has been set to " + kSpecial + timeString + kGood + " hours.";
+    }
+
+    public static String playerDoesNotExist(String playerName) {
+        return kPrefixBad + "The player " + kSpecial + playerName + kBad + " does not exist.";
+    }
+
+    public static String playtimeReset(String playerName, String previousPlaytime) {
+        return kPrefixGood + "The playtime of " + kSpecial + playerName + kGood + " has been reset. The previous playtime was " + kSpecial + previousPlaytime + kGood + " hours.";
+    }
+
+    public static String playtimeTopLine(int place, String playerName, String timeString) {
+        return "§e" + place + ". §a" + playerName + ": §2" + timeString;
     }
 }

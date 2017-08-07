@@ -7,8 +7,15 @@ package de.jonasfrey.admintools.exceptions;
 
 public class JFUnknownPlayerException extends JFException {
     
+    private String playerName;
+    
     public JFUnknownPlayerException(String playerName) {
         super("Unknown Player: '" + playerName + "'");
+        this.playerName = playerName;
+    }
+    
+    public String getPlayerName() {
+        return playerName;
     }
     
 }
