@@ -1,23 +1,31 @@
 package de.jonasfrey.admintools;
 
-/*
- * Copyright jonasfrey.
- * Created on 10.07.17.
+/**
+ * @author Jonas Frey
+ * @version 1.0, 10.07.17
  */
 
+import com.earth2me.essentials.Essentials;
 import de.jonasfrey.admintools.commands.*;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
 public class AdminTools extends JavaPlugin {
     
     private boolean debugMode;
-    public JFUtils utils;
+    private JFUtils utils;
+
+    private Essentials essentialsPlugin;
+    private GroupManagerHandler gmHandler;
     
     public AdminTools() {
         debugMode = getConfig().getBoolean("debug");
         this.utils = new JFUtils(this);
+        PluginManager manager = getServer().getPluginManager();
+        this.essentialsPlugin = (Essentials) manager.getPlugin("Essentials");
+        this.gmHandler = new GroupManagerHandler(this);
     }
 
     @Override
@@ -79,11 +87,28 @@ public class AdminTools extends JavaPlugin {
         // Add playtime to all online players
         utils.addPlaytimeToOnlinePlayers();
         utils.updateVotefly();
+        utils.reloadPlaytimeRanks();
     }
     
     private void secondTimer() {
         // Refresh the Scoreboard
         utils.updateTabColors();
         utils.updateScoreboards();
+    }
+    
+    /* ******************* */
+    /* Getters and Setters */
+    /* ******************* */
+
+    public JFUtils getUtils() {
+        return utils;
+    }
+
+    public Essentials getEssentialsPlugin() {
+        return essentialsPlugin;
+    }
+
+    public GroupManagerHandler getGMHandler() {
+        return gmHandler;
     }
 }

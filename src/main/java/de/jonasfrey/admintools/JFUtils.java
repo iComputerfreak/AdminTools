@@ -1,22 +1,14 @@
 package de.jonasfrey.admintools;
 
-import com.earth2me.essentials.Essentials;
-import org.anjocaido.groupmanager.GroupManager;
-import org.anjocaido.groupmanager.data.Group;
-import org.anjocaido.groupmanager.data.User;
-import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * @author Jonas Frey
@@ -26,41 +18,19 @@ import java.util.UUID;
 public class JFUtils {
 
     private AdminTools plugin;
-    private Essentials essentialsPlugin;
-    private GroupManager groupManagerPlugin;
     
-
     public JFUtils(AdminTools plugin) {
         this.plugin = plugin;
-        PluginManager manager = plugin.getServer().getPluginManager();
-        this.essentialsPlugin = (Essentials) manager.getPlugin("Essentials");
-        this.groupManagerPlugin = (GroupManager) manager.getPlugin("GroupManager");
-    }
-
-    public YamlConfiguration getUserData(UUID uuid) {
-        return YamlConfiguration.loadConfiguration(getUserDataFile(uuid));
-    }
-
-    public void saveUserData(YamlConfiguration data, UUID uuid) {
-        try {
-            data.save(getUserDataFile(uuid));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private File getUserDataFile(UUID uuid) {
-        return new File(plugin.getDataFolder() + "/userdata/" + uuid.toString() + ".yml");
     }
 
     public void addPlaytimeToOnlinePlayers() {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
-            com.earth2me.essentials.User u = essentialsPlugin.getUser(p.getUniqueId());
+            com.earth2me.essentials.User u = plugin.getEssentialsPlugin().getUser(p.getUniqueId());
             if (!u.isAfk()) {
-                YamlConfiguration data = getUserData(p.getUniqueId());
+                YamlConfiguration data = JFFileController.getUserData(p.getUniqueId());
                 int playtime = data.getInt("playtime") + 1;
                 data.set("playtime", playtime);
-                saveUserData(data, p.getUniqueId());
+                JFFileController.saveUserData(data, p.getUniqueId());
             }
         }
     }
@@ -84,30 +54,29 @@ public class JFUtils {
     }
 
     public void updateScoreboards() {
-        // TODO: Implement
+        throw new NotImplementedException();
     }
 
     public void reloadPlaytimeRanks() {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
-            String group = essentialsPlugin.getUser(p.getUniqueId()).getGroup();
-            YamlConfiguration data = getUserData(p.getUniqueId());
+            YamlConfiguration data = JFFileController.getUserData(p.getUniqueId());
             int playtimeMin = data.getInt("playtime");
-            if (playtimeMin >= 3000 && group.equalsIgnoreCase("SkyBeginner")) {
-                execute("manuadd " + p.getName() + " SkyProfi world");
-                plugin.getLogger().info(p.getName() + " promoted to SkyProfi.");
-            } else if (playtimeMin >= 9000 && group.equalsIgnoreCase("SkyProfi")) {
-                execute("manuadd " + p.getName() + " SkyExperte world");
-                plugin.getLogger().info(p.getName() + " promoted to SkyExperte.");
-            } else if (playtimeMin >= 18000 && group.equalsIgnoreCase("SkyExperte")) {
-                execute("manuadd " + p.getName() + " SkySuchtie world");
-                plugin.getLogger().info(p.getName() + " promoted to SkyExperte.");
+            
+            if (playtimeMin >= 3000 && plugin.getGMHandler().getUserGroup(p.getName()).getName().equalsIgnoreCase("SkyBeginner")) {
+                plugin.getGMHandler().setUserGroup(p.getName(), "SkyProfi");
+            }
+            if (playtimeMin >= 9000 && plugin.getGMHandler().getUserGroup(p.getName()).getName().equalsIgnoreCase("SkyProfi")) {
+                plugin.getGMHandler().setUserGroup(p.getName(), "SkyExperte");
+            }
+            if (playtimeMin >= 18000 && plugin.getGMHandler().getUserGroup(p.getName()).getName().equalsIgnoreCase("SkyExperte")) {
+                plugin.getGMHandler().setUserGroup(p.getName(), "SkySuchtie");
             }
         }
     }
     
     public void updateVotefly() {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
-            YamlConfiguration userData = getUserData(p.getUniqueId());
+            YamlConfiguration userData = JFFileController.getUserData(p.getUniqueId());
             int minutes = userData.getInt("votefly");
             if (minutes == 0) {
                 // No votefly active
@@ -115,7 +84,7 @@ public class JFUtils {
             }
             if (minutes == 1) {
                 // Remove votefly
-                removeUserSubgroup(p.getName(), "VoteFly");
+                plugin.getGMHandler().removeUserSubgroup(p.getName(), "VoteFly");
                 p.sendMessage(JFLiterals.kVoteFlyDeactivated);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
@@ -128,7 +97,7 @@ public class JFUtils {
             
             minutes -= 1;
             userData.set("votefly", minutes);
-            saveUserData(userData, p.getUniqueId());
+            JFFileController.saveUserData(userData, p.getUniqueId());
         }
     }
 
@@ -189,53 +158,4 @@ public class JFUtils {
         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd);
     }
     
-    /* *************************** */
-    /*        GROUP MANAGER        */
-    /* *************************** */
-    
-    public void addUserSubgroup(String playerName, String groupName) {
-        addUserSubgroup(playerName, groupName, "world");
-    }
-    
-    public void addUserSubgroup(String playerName, String groupName, String worldName) {
-        OverloadedWorldHolder worldHolder = groupManagerPlugin.getWorldsHolder().getWorldData(worldName);
-        if (worldHolder == null) {
-            plugin.getLogger().warning("{addUserSubgroup} Unknown world: '" + worldName + "'");
-            return;
-        }
-        Group g = worldHolder.getGroup(groupName);
-        if (g == null) {
-            plugin.getLogger().warning("{addUserSubgroup} Unknown group: '" + groupName + "'");
-            return;
-        }
-        User u = worldHolder.getUser(playerName);
-        if (u == null) {
-            plugin.getLogger().warning("{addUserSubgroup} Could not find player: '" + playerName + "'");
-            return;
-        }
-        u.addSubGroup(g);
-    }
-
-    public void removeUserSubgroup(String playerName, String groupName) {
-        removeUserSubgroup(playerName, groupName, "world");
-    }
-    
-    public void removeUserSubgroup(String playerName, String groupName, String worldName) {
-        OverloadedWorldHolder worldHolder = groupManagerPlugin.getWorldsHolder().getWorldData(worldName);
-        if (worldHolder == null) {
-            plugin.getLogger().warning("{addUserSubgroup} Unknown world: '" + worldName + "'");
-            return;
-        }
-        Group g = worldHolder.getGroup(groupName);
-        if (g == null) {
-            plugin.getLogger().warning("{addUserSubgroup} Unknown group: '" + groupName + "'");
-            return;
-        }
-        User u = worldHolder.getUser(playerName);
-        if (u == null) {
-            plugin.getLogger().warning("{addUserSubgroup} Could not find player: '" + playerName + "'");
-            return;
-        }
-        u.removeSubGroup(g);
-    }
 }

@@ -1,6 +1,7 @@
 package de.jonasfrey.admintools.commands;
 
 import de.jonasfrey.admintools.AdminTools;
+import de.jonasfrey.admintools.JFFileController;
 import de.jonasfrey.admintools.JFLiterals;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,11 +27,11 @@ public class VoteFlyCommand extends JFCommand {
         Player target = plugin.getServer().getPlayer(targetName);
         
         if (args.length <= 1) {
-            YamlConfiguration userData = plugin.utils.getUserData(target.getUniqueId());
+            YamlConfiguration userData = JFFileController.getUserData(target.getUniqueId());
             int minutes = userData.getInt("votefly");
             userData.set("votefly", minutes + JFLiterals.kVoteFlyDurationMinutes);
-            plugin.utils.saveUserData(userData, target.getUniqueId());
-            plugin.utils.addUserSubgroup(target.getName(), "VoteFly");
+            JFFileController.saveUserData(userData, target.getUniqueId());
+            plugin.getGMHandler().addUserSubgroup(target.getName(), "VoteFly");
             target.sendMessage(JFLiterals.kVoteflyActivated);
             return true;
         }

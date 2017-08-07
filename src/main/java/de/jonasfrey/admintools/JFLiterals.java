@@ -1,8 +1,8 @@
 package de.jonasfrey.admintools;
 
-/*
- * Copyright jonasfrey.
- * Created on 10.07.17.
+/**
+ * @author Jonas Frey
+ * @version 1.0, 10.07.17
  */
 
 public abstract class JFLiterals {
