@@ -27,7 +27,9 @@ public class RainbowCommand extends JFCommand {
 
         String text = String.join(" ", args);
         for (ChatColor c : ChatColor.values()) {
-            plugin.getServer().broadcastMessage("§6[§aRainbow§6] " + c + text);
+            if (c.isColor()) {
+                plugin.getServer().broadcastMessage("§6[§aRainbow§6] " + c + text);
+            }
         }
         
         return true;

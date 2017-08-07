@@ -25,7 +25,7 @@ commands:
     ballot:
         description: Let the users vote yes or no to a given topic
         permission: admintools.ballot
-        usage: "§6Usage: §c/ballot < yes | no | topic | set | reset >"
+        usage: "§6Usage: §c/ballot < yes | no | topic | set | reset | result >"
     fix:
         description: Repair the durability of one or all items in your inventory
         permission: admintools.fix

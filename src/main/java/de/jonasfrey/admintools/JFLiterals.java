@@ -29,4 +29,8 @@ public abstract class JFLiterals {
             + "will be disabled in 10 seconds.";
 
     public static final int kVoteFlyDurationMinutes = 2;
+    
+    public static String voteResult(int yesVotes, int noVotes) {
+        return kPrefix + "§a" + yesVotes + " §2Players voted yes and §a" + noVotes + " §2Players voted no.";
+    }
 }

@@ -45,6 +45,9 @@ public class JFUtils {
             }
 
             for (ChatColor color : ChatColor.values()) {
+                if (!color.isColor()) {
+                    continue;
+                }
                 char colorChar = color.getChar();
                 if (player.hasPermission("admintools.tabcolors." + colorChar)) {
                     player.setPlayerListName("§" + colorChar + p);
