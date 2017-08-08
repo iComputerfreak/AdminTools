@@ -5,15 +5,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-
 /**
  * @author Jonas Frey
- * @version 1.0, 11.07.17
+ * @version 1.0, 08.08.17
  */
+public class ColorsCommand extends JFCommand {
 
-public class RainbowCommand extends JFCommand {
-    
-    public RainbowCommand(AdminTools plugin) {
+    public ColorsCommand(AdminTools plugin) {
         super(plugin);
     }
 
@@ -21,12 +19,11 @@ public class RainbowCommand extends JFCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         super.onCommand(sender, cmd, label, args);
         
-        if (args.length == 0) return false;
-
-        String text = String.join(" ", args);
+        if (args.length != 0) return false;
+        
         for (ChatColor c : ChatColor.values()) {
             if (c.isColor()) {
-                plugin.getServer().broadcastMessage("§6[§aRainbow§6] " + c + text);
+                sender.sendMessage(c + c.name() + ": &" + c.getChar());
             }
         }
         

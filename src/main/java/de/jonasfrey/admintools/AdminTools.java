@@ -48,8 +48,8 @@ public class AdminTools extends JavaPlugin {
         getCommand("rainbow").setExecutor(new RainbowCommand(this));
         getCommand("votefly").setExecutor(new VoteFlyCommand(this));
         getCommand("playtime").setExecutor(new PlaytimeCommand(this));
-        /*getCommand("colors").setExecutor(new JFCommand(this));
-        getCommand("adminchat").setExecutor(new JFCommand(this));
+        getCommand("colors").setExecutor(new ColorsCommand(this));
+        /*getCommand("adminchat").setExecutor(new JFCommand(this));
         getCommand("teamchat").setExecutor(new JFCommand(this));
         getCommand("privatechat").setExecutor(new JFCommand(this));
         getCommand("kills").setExecutor(new JFCommand(this));
