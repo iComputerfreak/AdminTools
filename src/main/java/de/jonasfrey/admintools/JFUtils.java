@@ -12,6 +12,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * @author Jonas Frey
@@ -21,9 +22,11 @@ import java.util.Arrays;
 public class JFUtils {
 
     private AdminTools plugin;
+    HashMap<SpecialChatType, ArrayList<Player>> specialChatPlayers;
     
     public JFUtils(AdminTools plugin) {
         this.plugin = plugin;
+        this.specialChatPlayers = new HashMap<>();
     }
 
     public void addPlaytimeToOnlinePlayers() {
@@ -176,5 +179,22 @@ public class JFUtils {
             throw new JFUnknownPlayerException(name);
         }
         return p;
+    }
+    
+    public void writeInSpecialChat(SpecialChatType type, Player sender, String message) {
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
+            if (p.hasPermission(type.getPermission())) {
+                p.sendMessage(type.getPrefix(sender.getName()) + message);
+            }
+        }
+    }
+    
+    public void enableSpecialChat(SpecialChatType type, Player sender) {
+        ArrayList<Player> players = specialChatPlayers.get(type);
+        if (players == null) {
+            players = new ArrayList<>();
+        }
+        players.add(sender);
+        specialChatPlayers.put(type, players);
     }
 }

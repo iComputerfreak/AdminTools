@@ -3,15 +3,21 @@ package de.jonasfrey.admintools;
 import com.earth2me.essentials.Essentials;
 import de.jonasfrey.admintools.commands.*;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 /**
  * @author Jonas Frey
  * @version 1.0, 10.07.17
  */
 
-public class AdminTools extends JavaPlugin {
+public class AdminTools extends JavaPlugin implements Listener {
     
     private boolean debugMode;
     private JFUtils utils;
@@ -49,10 +55,10 @@ public class AdminTools extends JavaPlugin {
         getCommand("votefly").setExecutor(new VoteFlyCommand(this));
         getCommand("playtime").setExecutor(new PlaytimeCommand(this));
         getCommand("colors").setExecutor(new ColorsCommand(this));
-        /*getCommand("adminchat").setExecutor(new JFCommand(this));
-        getCommand("teamchat").setExecutor(new JFCommand(this));
-        getCommand("privatechat").setExecutor(new JFCommand(this));
-        getCommand("kills").setExecutor(new JFCommand(this));
+        getCommand("adminchat").setExecutor(new AdminChatCommand(this));
+        getCommand("teamchat").setExecutor(new TeamChatCommand(this));
+        getCommand("privatechat").setExecutor(new PrivateChatCommand(this));
+        /*getCommand("kills").setExecutor(new JFCommand(this));
         getCommand("spy").setExecutor(new JFCommand(this));
         getCommand("leaveskypvp").setExecutor(new JFCommand(this));
         getCommand("muteall").setExecutor(new JFCommand(this));
@@ -110,5 +116,16 @@ public class AdminTools extends JavaPlugin {
 
     public GroupManagerHandler getGMHandler() {
         return gmHandler;
+    }
+    
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+        for (SpecialChatType key : utils.specialChatPlayers.keySet()) {
+            ArrayList<Player> players = utils.specialChatPlayers.get(key);
+            if (players.contains(e.getPlayer())) {
+                utils.writeInSpecialChat(key, e.getPlayer(), e.getMessage());
+                e.setCancelled(true);
+            }
+        }
     }
 }
