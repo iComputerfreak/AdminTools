@@ -170,7 +170,7 @@ public class JFUtils {
     public String getTimeString(int minutes) {
         int hours = minutes / 60;
         int newMinutes = minutes % 60;
-        return String.format("%02d:%02d", hours, newMinutes);
+        return String.format("%02d:%02d hours", hours, newMinutes);
     }
     
     public @NotNull OfflinePlayer getOfflinePlayer(String name) throws JFUnknownPlayerException {

@@ -29,7 +29,7 @@ public abstract class JFLiterals {
             JFLiterals.kVoteFlyDurationMinutes + " minutes";
     public static final String kVoteFlyDeactivated = kPrefixBad + "Your Vote Fly has been disabled. Your fly mode "
             + "will be disabled in " + kSpecial + "10 seconds.";
-    public static final String kPlaytimeTopHeader = "§a----- §6Top Ten §a-----";
+    public static final String kDataTopHeader = "§a----- §6Top Ten §a-----";
 
     public static final int kVoteFlyDurationMinutes = 2;
     public static String kWrongTimeFormat = kBad + "Wrong time format. Please use <hours>:<minutes>";
@@ -37,28 +37,28 @@ public abstract class JFLiterals {
     public static String voteResult(int yesVotes, int noVotes) {
         return kPrefixSpecial + yesVotes + kGood + " Players voted yes and " + kSpecial + noVotes + kGood + " Players voted no.";
     }
-
-    public static String playtimeMe(String timeString) {
-        return kPrefixGood + "You have played here for " + kSpecial + timeString + kGood + " hours.";
+    
+    public static String dataMe(String type, String value) {
+        return kPrefixGood + "Your " + type + ": " + kSpecial + value;
     }
 
-    public static String playtimeGet(String playerName, String timeString) {
-        return kPrefixSpecial + playerName + kGood + " played here for " + kSpecial + timeString + kGood + " hours.";
+    public static String dataGet(String type, String playerName, String value) {
+        return kPrefixSpecial + playerName + kGood + "'s " + type + ": " + kSpecial + value;
     }
 
-    public static String playtimeSet(String playerName, String timeString) {
-        return kPrefixGood + "The playtime of " + kSpecial + playerName + kGood + " has been set to " + kSpecial + timeString + kGood + " hours.";
+    public static String dataSet(String type, String playerName, String value) {
+        return kPrefixSpecial + playerName + kGood + "'s " + type + " has been set to " + kSpecial + value;
+    }
+
+    public static String dataReset(String type, String playerName, String oldValue) {
+        return kPrefixSpecial + playerName + kGood + "'s " + type + " has been reset. The previous " + type + " was " + kSpecial + oldValue;
+    }
+
+    public static String dataTopLine(int place, String playerName, String value) {
+        return "§e" + place + ". §a" + playerName + ": §2" + value;
     }
 
     public static String playerDoesNotExist(String playerName) {
         return kPrefixBad + "The player " + kSpecial + playerName + kBad + " does not exist.";
-    }
-
-    public static String playtimeReset(String playerName, String previousPlaytime) {
-        return kPrefixGood + "The playtime of " + kSpecial + playerName + kGood + " has been reset. The previous playtime was " + kSpecial + previousPlaytime + kGood + " hours.";
-    }
-
-    public static String playtimeTopLine(int place, String playerName, String timeString) {
-        return "§e" + place + ". §a" + playerName + ": §2" + timeString;
     }
 }
