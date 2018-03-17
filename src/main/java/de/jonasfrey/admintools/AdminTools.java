@@ -65,14 +65,13 @@ public class AdminTools extends JavaPlugin implements Listener {
         getCommand("spy").setExecutor(new SpyCommand(this));
         getCommand("leaveskypvp").setExecutor(new LeaveSkyPvPCommand(this));
         getCommand("muteall").setExecutor(new MuteAllCommand(this));
-        /*getCommand("insultfilter").setExecutor(new JFCommand(this));
-        getCommand("fastmessages").setExecutor(new JFCommand(this));
-        getCommand("showmessage").setExecutor(new JFCommand(this));
-        getCommand("helpopreply").setExecutor(new JFCommand(this));
-        getCommand("friends").setExecutor(new JFCommand(this));
-        getCommand("checkenchantment").setExecutor(new JFCommand(this));
-        getCommand("uuidforname").setExecutor(new JFCommand(this));
-        getCommand("clearchat").setExecutor(new JFCommand(this));*/
+        getCommand("fastmessages").setExecutor(new FastMessagesCommand(this));
+        getCommand("showmessage").setExecutor(new ShowMessageCommand(this));
+        getCommand("helpopreply").setExecutor(new HelpOpReply(this));
+        getCommand("friends").setExecutor(new FriendsCommand(this));
+        /*getCommand("checkenchantment").setExecutor(new JFCommand(this));
+        /*getCommand("uuidforname").setExecutor(new JFCommand(this));
+        /*getCommand("clearchat").setExecutor(new JFCommand(this));*/
     }
     
     private void registerTimers() {

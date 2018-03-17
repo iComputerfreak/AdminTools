@@ -16,6 +16,8 @@ public abstract class JFLiterals {
     public static final String kPrefixBad = kPrefix + kBad;
     public static final String kPrefixSpecial = kPrefix + kSpecial;
     
+    public static final String kHasToBeExecutedAsPlayer = "This command has to be executed as a player";
+    
     public static final String kNoBallotRunning = kPrefixBad + "There is no ballot running at the moment.";
     public static final String kVoteSuccessful = kPrefixGood + "Your vote was successful.";
     public static final String kAlreadyVoted = kPrefixGood + "You have already voted for this option.";
@@ -37,6 +39,12 @@ public abstract class JFLiterals {
     public static String kAlreadyWaitingForTeleport = kPrefixBad + "You are already waiting for a teleport.";
     public static String kTeleportingIn5Seconds = kPrefixGood + "You are being teleported in 5 seconds. Don't move!";
     public static String kTeleporting = kPrefixGood + "Teleporting...";
+    public static String kNoMessages = kPrefixGood + "There are no messages.";
+    public static String kMessagesHeader = "§6------------- §aMessages §6-------------";
+    public static String kNoMessageFound = kPrefixBad + "There is no message with this name.";
+    public static String kMessageShown = kPrefixGood + "The message has been shown.";
+    public static String kNoFriends = kPrefixGood + "You currently have no friends.";
+    public static String kFriendsListPrefix = kPrefixGood + "Friends: " + kSpecial;
 
     public static String voteResult(int yesVotes, int noVotes) {
         return kPrefixSpecial + yesVotes + kGood + " Players voted yes and " + kSpecial + noVotes + kGood + " Players voted no.";
@@ -80,5 +88,29 @@ public abstract class JFLiterals {
 
     public static String chatUnMuted(boolean wasDisabled) {
         return kPrefix + (wasDisabled ? JFLiterals.kGood : JFLiterals.kBad) + "The server has been " + (wasDisabled ? "un" : "") + "muted!";
+    }
+
+    public static String kHelpOpReplyExternMessage(String sender, String target, String message) {
+        return "§6[§4HelpOp Reply§6] [§c" + sender + "§6 -> §c" + target + "§6] §b" + message;
+    }
+
+    public static String kHelpOpReplyInternMessage(String sender, String message) {
+        return "§6[§4HelpOp Reply§6] [§c" + sender + "§6] §b" + message;
+    }
+
+    public static String friendAdded(String name) {
+        return kPrefixSpecial + name + kGood + " has been added to your friends.";
+    }
+
+    public static String friendRemoved(String name) {
+        return kPrefixSpecial + name + kGood + " has been removed from your friends.";
+    }
+
+    public static String playerIsAlreadyFriend(String name) {
+        return kPrefixSpecial + name + kGood + " is already your friend.";
+    }
+
+    public static String notAFriend(String name) {
+        return kPrefixSpecial + name + kBad + " is not your friend.";
     }
 }

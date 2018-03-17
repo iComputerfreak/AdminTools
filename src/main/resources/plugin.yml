@@ -80,10 +80,6 @@ commands:
         permission: admintools.muteall
         usage: "§6Usage: §c/muteall"
         aliases: [unmuteall]
-    insultfilter:
-        description: Modify the insults filter 
-        permission: admintools.insultfilter
-        usage: "§6Usage: §c/insultfilter < add | remove > <word>"
     fastmessages:
         description: Displays a predefined message
         permission: admintools.fastmessages

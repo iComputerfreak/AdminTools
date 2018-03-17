@@ -186,7 +186,15 @@ public class JFUtils {
         }
         return p;
     }
-    
+
+    public Player getOnlinePlayer(String name) throws JFUnknownPlayerException {
+        Player p = plugin.getServer().getPlayer(name);
+        if (p == null) {
+            throw new JFUnknownPlayerException(name);
+        }
+        return p;
+    }
+
     public void writeInSpecialChat(SpecialChatType type, Player sender, String message) {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (p.hasPermission(type.getPermission())) {
@@ -194,7 +202,7 @@ public class JFUtils {
             }
         }
     }
-    
+
     public void enableSpecialChat(SpecialChatType type, Player sender) {
         ArrayList<Player> players = specialChatPlayers.get(type);
         if (players == null) {

@@ -26,7 +26,7 @@ public class SpyCommand extends JFCommand {
         super.onCommand(sender, cmd, label, args);
 
         if (!(sender instanceof Player)) {
-            plugin.getLogger().warning("This command has to be executed as a player");
+            plugin.getLogger().warning(JFLiterals.kHasToBeExecutedAsPlayer);
             return true;
         }
 

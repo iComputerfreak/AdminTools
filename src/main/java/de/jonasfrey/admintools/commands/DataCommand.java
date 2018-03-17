@@ -55,7 +55,7 @@ public class DataCommand extends JFCommand {
 
         if (!(sender instanceof Player)) {
             if (args[0].equalsIgnoreCase("me")) {
-                plugin.getLogger().warning("This command has to be executed as a player");
+                plugin.getLogger().warning(JFLiterals.kHasToBeExecutedAsPlayer);
                 return true;
             }
         }
