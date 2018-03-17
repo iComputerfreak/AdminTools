@@ -1,6 +1,7 @@
 package de.jonasfrey.admintools.commands;
 
 import de.jonasfrey.admintools.AdminTools;
+import de.jonasfrey.admintools.JFLiterals;
 import de.jonasfrey.admintools.SpecialChatType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

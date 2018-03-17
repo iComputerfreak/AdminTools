@@ -218,12 +218,12 @@ public class AdminTools extends JavaPlugin implements Listener {
         e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', msg));
         
         // update the scoreboard
-        utils.updateScoreboard(e.getPlayer());
+        utils.updateScoreboards();
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
                 // Update tab colors
-                utils.updateTab();
+                utils.updateTabColors();
                 
                 // Show online friends
                 List<UUID> friends = JFFileController.getFriends(p.getUniqueId());

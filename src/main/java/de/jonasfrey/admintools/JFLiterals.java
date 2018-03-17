@@ -130,4 +130,8 @@ public abstract class JFLiterals {
     public static String onlineFriends(String friendList) {
         return kPrefixGood + "Online friends: " + kSpecial + friendList;
     }
+
+    public static String scoreboardToggled(boolean newState) {
+        return kPrefixGood + "Your scoreboard is now " + (newState ? "§aenabled" : "§4disabled") + kGood + ".";
+    }
 }

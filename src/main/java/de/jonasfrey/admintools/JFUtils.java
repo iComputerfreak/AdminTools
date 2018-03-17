@@ -1,6 +1,8 @@
 package de.jonasfrey.admintools;
 
 import com.avaje.ebean.validation.NotNull;
+import com.earth2me.essentials.api.Economy;
+import com.earth2me.essentials.api.UserDoesNotExistException;
 import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
 import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
 import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
@@ -8,11 +10,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Random;
 
 /**
  * @author Jonas Frey
@@ -69,7 +79,70 @@ public class JFUtils {
     }
 
     public void updateScoreboards() {
-        throw new NotImplementedException();
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
+            updateScoreboard(p);
+        }
+    }
+    
+    private void updateScoreboard(Player p) {
+        
+        YamlConfiguration userData = JFFileController.getUserData(p.getUniqueId());
+        if (!userData.getBoolean("scoreboard")) {
+            return;
+        }
+        
+        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective obj = board.registerNewObjective("GSN Scoreboard", "None");
+        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+        obj.setDisplayName("§6§oGolden Sky Server");
+
+        if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
+            plugin.getLogger().warning("You need to have VAULT plugin installed.");
+            return;
+        }
+        
+        ArrayList<String> lines = new ArrayList<>();
+
+        if (p.hasPermission("admintools.adminchat")) {
+            boolean adminChat = false;
+            if (plugin.getUtils().specialChatPlayers.get(SpecialChatType.ADMIN_CHAT).contains(p)) {
+                adminChat = true;
+            }
+            lines.add((adminChat ? "§a" : "§c") + "Admin Chat " + (adminChat ? "on" : "off"));
+        }
+        if (p.hasPermission("admintools.teamchat")) {
+            boolean teamChat = false;
+            if (plugin.getUtils().specialChatPlayers.get(SpecialChatType.TEAM_CHAT).contains(p)) {
+                teamChat = true;
+            }
+            lines.add((teamChat ? "§a" : "§c") + "Team Chat " + (teamChat ? "on" : "off"));
+        }
+
+        // get balance of player
+        double money = 0;
+        try {
+            money = Economy.getMoneyExact(p.getName()).doubleValue();
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+        }
+        // Playtime
+        lines.add("§3Playtime");
+        lines.add("§b" + plugin.getUtils().getTimeString(userData.getInt("playtime")) + " hours");
+        // Money
+        lines.add("§2Money");
+        lines.add(String.format("§a%.2f $", money));
+        // Kills
+        lines.add("§5Kills");
+        lines.add("§d" + userData.getInt("kills"));
+        
+        // parse array list to scoreboard
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            Score s = obj.getScore(line.length() < 17 ? line : "ERROR");
+            s.setScore(lines.size() - i);
+        }
+
+        p.setScoreboard(board);
     }
 
     public void reloadPlaytimeRanks() throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
@@ -210,5 +283,59 @@ public class JFUtils {
         }
         players.add(sender);
         specialChatPlayers.put(type, players);
+    }
+
+    public boolean generatesCobble(int id, Block b) {
+        BlockFace[] faces = {BlockFace.SELF, BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
+        int mirrorID1 = (id == 8) || (id == 9) ? 10 : 8;
+        int mirrorID2 = (id == 8) || (id == 9) ? 11 : 9;
+        for (BlockFace face : faces) {
+            Block r = b.getRelative(face, 1);
+            if ((r.getTypeId() == mirrorID1) || (r.getTypeId() == mirrorID2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Material chooseBlock() {
+        double totalDraws = 0.0;
+        Material blockMaterial = null;
+        Random rand = new Random();
+        Integer currentDraw = 0;
+        
+        // Preparing - START
+
+        ArrayList<Integer> values = new ArrayList<>();
+        ArrayList<String> materials = new ArrayList<>();
+        int sum = 0;
+        // Get the total sum of values (times 100)
+        for (String key : plugin.getConfig().getConfigurationSection("ore-gen").getKeys(false)) {
+            double value = plugin.getConfig().getDouble("ore-gen." + key);
+            // get rid of the two decimal places
+            sum += (int) (value * 100.0);
+            values.add(sum);
+            materials.add(key);
+        }
+        
+        // Preparing - END
+
+        // Draw a winner
+        Integer random = rand.nextInt(sum);
+        String winner = null;
+        
+        for (int i = 0; i < values.size(); i++) {
+            // Wait until sum gets bigger than random
+            if (values.get(i) > random) {
+                winner = materials.get(i);
+                break;
+            }
+        }
+        
+        if (winner == null) {
+            throw new RuntimeException("No winner found when selecting a material for the cobble gen");
+        }
+        
+        return Material.getMaterial(winner);
     }
 }

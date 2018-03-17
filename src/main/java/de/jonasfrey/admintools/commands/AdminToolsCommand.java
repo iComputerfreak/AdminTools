@@ -6,8 +6,12 @@ package de.jonasfrey.admintools.commands;
  */
 
 import de.jonasfrey.admintools.AdminTools;
+import de.jonasfrey.admintools.JFFileController;
+import de.jonasfrey.admintools.JFLiterals;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 public class AdminToolsCommand extends JFCommand {
 
@@ -18,6 +22,24 @@ public class AdminToolsCommand extends JFCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         super.onCommand(sender, cmd, s, args);
+
+        if (!(sender instanceof Player)) {
+            plugin.getLogger().warning(JFLiterals.kHasToBeExecutedAsPlayer);
+            return true;
+        }
+
+        Player playerSender = (Player) sender;
+        
+        if (args.length != 1 || !args[0].equalsIgnoreCase("scoreboard")) {
+            return false;
+        }
+        
+        // toggle scoreboard
+        YamlConfiguration userData = JFFileController.getUserData(playerSender.getUniqueId());
+        boolean scoreboard = userData.getBoolean("scoreboard");
+        userData.set("scoreboard", !scoreboard);
+        JFFileController.saveUserData(userData, playerSender.getUniqueId());
+        playerSender.sendMessage(JFLiterals.scoreboardToggled(!scoreboard));
         
         return true;
     }
