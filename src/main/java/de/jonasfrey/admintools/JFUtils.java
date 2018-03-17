@@ -25,12 +25,14 @@ public class JFUtils {
     HashMap<SpecialChatType, ArrayList<Player>> specialChatPlayers;
     public HashMap<Player, OfflinePlayer> spyPlayers;
     public HashMap<Player, Integer> playersWaitingForTeleport;
+    public boolean chatDisabled;
     
     public JFUtils(AdminTools plugin) {
         this.plugin = plugin;
         this.specialChatPlayers = new HashMap<>();
         this.spyPlayers = new HashMap<>();
         this.playersWaitingForTeleport = new HashMap<>();
+        this.chatDisabled = false;
     }
 
     public void addPlaytimeToOnlinePlayers() {

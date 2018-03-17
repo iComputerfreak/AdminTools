@@ -77,4 +77,8 @@ public abstract class JFLiterals {
     public static String nowSpying(String name) {
         return kPrefixGood + "You now see all commands performed by " + kSpecial + name + kGood + ".";
     }
+
+    public static String chatUnMuted(boolean wasDisabled) {
+        return kPrefix + (wasDisabled ? JFLiterals.kGood : JFLiterals.kBad) + "The server has been " + (wasDisabled ? "un" : "") + "muted!";
+    }
 }

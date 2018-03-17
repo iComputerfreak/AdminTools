@@ -79,6 +79,7 @@ commands:
         description: Mute all players on the server. Use again to unmute
         permission: admintools.muteall
         usage: "§6Usage: §c/muteall"
+        aliases: [unmuteall]
     insultfilter:
         description: Modify the insults filter 
         permission: admintools.insultfilter

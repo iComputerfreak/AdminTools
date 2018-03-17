@@ -50,6 +50,6 @@ public class LeaveSkyPvPCommand extends JFCommand {
         p.sendMessage(JFLiterals.kTeleportingIn5Seconds);
         plugin.getUtils().playersWaitingForTeleport.put(p, scheduler);
 
-        return false;
+        return true;
     }
 }
