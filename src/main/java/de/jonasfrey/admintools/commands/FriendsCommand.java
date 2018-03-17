@@ -21,55 +21,6 @@ public class FriendsCommand extends JFCommand {
     public FriendsCommand(AdminTools plugin) {
         super(plugin);
     }
-
-    /*
-    * if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-            ArrayList<UUID> friends = main.fileController.loadFriends(p.getUniqueId());
-            String friendList = "";
-            for (UUID friend : friends) {
-                OfflinePlayer op = main.getServer().getOfflinePlayer(friend);
-                if (op == null) {
-                    friendList += friend.toString() + ", ";
-                } else {
-                    friendList += op.getName() + ", ";
-                }
-            }
-            if (friendList.length() == 0) {
-                p.sendMessage(JFUtils.greenPrefix + "Du hast im Moment keine Freunde!");
-                return;
-            }
-            friendList = friendList.substring(0, friendList.length() - 2);
-            p.sendMessage(JFUtils.greenPrefix + "§2Friends: §a" + friendList);
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("add")) {
-            if (main.utils.tryPlayer(p, args[1], false)) {
-                return;
-            }
-            OfflinePlayer op = main.utils.getOfflinePlayerWithName(args[1]);
-            if (main.fileController.loadFriends(p.getUniqueId()).contains(op.getUniqueId())) {
-                p.sendMessage(JFUtils.redPrefix + "§2" + op.getName() + " §aist bereits in deiner Freundesliste.");
-                return;
-            }
-            main.fileController.addFriend(p.getUniqueId(), op.getUniqueId());
-            p.sendMessage(JFUtils.greenPrefix + "§2" + op.getName() + " §awurde zu deinen Freunden hinzugefügt.");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
-            if (main.utils.tryPlayer(p, args[1], false)) {
-                return;
-            }
-            OfflinePlayer op = main.utils.getOfflinePlayerWithName(args[1]);
-            ArrayList<UUID> friends = main.fileController.loadFriends(p.getUniqueId());
-            if (friends.contains(op.getUniqueId())) {
-                friends.remove(op.getUniqueId());
-                main.fileController.saveFriends(p.getUniqueId(), friends);
-                p.sendMessage(JFUtils.greenPrefix + "§2" + op.getName() + " §awurde aus deinen Freunden entfernt.");
-            } else {
-                p.sendMessage(JFUtils.greenPrefix + "§2" + op.getName() + " §aist nicht mit dir befreundet.");
-            }
-        } else if (args.length == 1 && args[0].equalsIgnoreCase("clear")) {
-            ArrayList<UUID> friends = new ArrayList<>();
-            main.fileController.saveFriends(p.getUniqueId(), friends);
-            p.sendMessage(JFUtils.greenPrefix + "§aDeine Freundesliste wurde geleert.");
-        } else {
-    * */
     
     // /friends < list | add | remove > [player]
     

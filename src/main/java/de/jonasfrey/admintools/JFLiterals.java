@@ -1,6 +1,6 @@
 package de.jonasfrey.admintools;
 
-/**
+import java.util.UUID; /**
  * @author Jonas Frey
  * @version 1.0, 10.07.17
  */
@@ -17,7 +17,11 @@ public abstract class JFLiterals {
     public static final String kPrefixSpecial = kPrefix + kSpecial;
     
     public static final String kHasToBeExecutedAsPlayer = "This command has to be executed as a player";
-    
+
+    public static final String kPermissionMuteallExempt = "admintools.muteall.exempt";
+    public static final String kPermissionCapsExempt = "admintools.capsexempt";
+    public static final String kPermissionFilterExempt = "admintools.filterexempt";
+
     public static final String kNoBallotRunning = kPrefixBad + "There is no ballot running at the moment.";
     public static final String kVoteSuccessful = kPrefixGood + "Your vote was successful.";
     public static final String kAlreadyVoted = kPrefixGood + "You have already voted for this option.";
@@ -33,18 +37,23 @@ public abstract class JFLiterals {
     public static final String kDataTopHeader = "§a----- §6Top Ten §a-----";
 
     public static final int kVoteFlyDurationMinutes = 2;
-    public static String kWrongTimeFormat = kPrefixBad + "Wrong time format. Please use <hours>:<minutes>";
-    public static String kNotSpying = kPrefixBad + "You are not spying at anyone right now.";
-    public static String kAlreadySpying = kPrefixBad + "You are already spying on someone.";
-    public static String kAlreadyWaitingForTeleport = kPrefixBad + "You are already waiting for a teleport.";
-    public static String kTeleportingIn5Seconds = kPrefixGood + "You are being teleported in 5 seconds. Don't move!";
-    public static String kTeleporting = kPrefixGood + "Teleporting...";
-    public static String kNoMessages = kPrefixGood + "There are no messages.";
-    public static String kMessagesHeader = "§6------------- §aMessages §6-------------";
-    public static String kNoMessageFound = kPrefixBad + "There is no message with this name.";
-    public static String kMessageShown = kPrefixGood + "The message has been shown.";
-    public static String kNoFriends = kPrefixGood + "You currently have no friends.";
-    public static String kFriendsListPrefix = kPrefixGood + "Friends: " + kSpecial;
+    public static final String kWrongTimeFormat = kPrefixBad + "Wrong time format. Please use <hours>:<minutes>";
+    public static final String kNotSpying = kPrefixBad + "You are not spying at anyone right now.";
+    public static final String kAlreadySpying = kPrefixBad + "You are already spying on someone.";
+    public static final String kAlreadyWaitingForTeleport = kPrefixBad + "You are already waiting for a teleport.";
+    public static final String kTeleportingIn5Seconds = kPrefixGood + "You are being teleported in 5 seconds. Don't move!";
+    public static final String kTeleporting = kPrefixGood + "Teleporting...";
+    public static final String kNoMessages = kPrefixGood + "There are no messages.";
+    public static final String kMessagesHeader = "§6------------- §aMessages §6-------------";
+    public static final String kNoMessageFound = kPrefixBad + "There is no message with this name.";
+    public static final String kMessageShown = kPrefixGood + "The message has been shown.";
+    public static final String kNoFriends = kPrefixGood + "You currently have no friends.";
+    public static final String kFriendsListPrefix = kPrefixGood + "Friends: " + kSpecial;
+    public static final String kNoItemInHand = kPrefixBad + "You don't have any item in your hand.";
+    public static final String kChatDisabled = kPrefixBad + "The chat is currently disabled. You cannot talk now.";
+    public static final String kNoFriendsOnline = kPrefixGood + "None of your friends are online right now.";
+    public static final String kCommandBlocked = kPrefixBad + "This command has been blocked.";
+    public static final String kTeleportAborted = kPrefixBad + "Teleport aborted!";
 
     public static String voteResult(int yesVotes, int noVotes) {
         return kPrefixSpecial + yesVotes + kGood + " Players voted yes and " + kSpecial + noVotes + kGood + " Players voted no.";
@@ -112,5 +121,13 @@ public abstract class JFLiterals {
 
     public static String notAFriend(String name) {
         return kPrefixSpecial + name + kBad + " is not your friend.";
+    }
+
+    public static String uuidForName(String name, UUID uuid) {
+        return kPrefixGood + "The UUID of " + kSpecial + name + kGood + " is " + kSpecial + uuid + kGood + ".";
+    }
+
+    public static String onlineFriends(String friendList) {
+        return kPrefixGood + "Online friends: " + kSpecial + friendList;
     }
 }
