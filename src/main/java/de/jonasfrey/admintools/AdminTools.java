@@ -2,6 +2,9 @@ package de.jonasfrey.admintools;
 
 import com.earth2me.essentials.Essentials;
 import de.jonasfrey.admintools.commands.*;
+import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
+import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
+import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,8 +62,8 @@ public class AdminTools extends JavaPlugin implements Listener {
         getCommand("teamchat").setExecutor(new TeamChatCommand(this));
         getCommand("privatechat").setExecutor(new PrivateChatCommand(this));
         getCommand("kills").setExecutor(new KillsCommand(this));
-        /*getCommand("spy").setExecutor(new JFCommand(this));
-        getCommand("leaveskypvp").setExecutor(new JFCommand(this));
+        getCommand("spy").setExecutor(new SpyCommand(this));
+        /*getCommand("leaveskypvp").setExecutor(new JFCommand(this));
         getCommand("muteall").setExecutor(new JFCommand(this));
         getCommand("insultfilter").setExecutor(new JFCommand(this));
         getCommand("fastmessages").setExecutor(new JFCommand(this));
@@ -91,9 +94,13 @@ public class AdminTools extends JavaPlugin implements Listener {
     
     private void minuteTimer() {
         // Add playtime to all online players
-        utils.addPlaytimeToOnlinePlayers();
-        utils.updateVotefly();
-        utils.reloadPlaytimeRanks();
+        try {
+            utils.updateVotefly();
+            utils.reloadPlaytimeRanks();
+            utils.addPlaytimeToOnlinePlayers();
+        } catch (JFUnknownWorldException | JFUnknownPlayerException | JFUnknownGroupException e) {
+            e.printStackTrace();
+        }
     }
     
     private void secondTimer() {

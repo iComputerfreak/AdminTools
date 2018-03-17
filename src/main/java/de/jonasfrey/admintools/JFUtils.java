@@ -1,7 +1,9 @@
 package de.jonasfrey.admintools;
 
 import com.avaje.ebean.validation.NotNull;
+import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
 import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
+import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,9 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * @author Jonas Frey
@@ -23,10 +23,12 @@ public class JFUtils {
 
     private AdminTools plugin;
     HashMap<SpecialChatType, ArrayList<Player>> specialChatPlayers;
+    public HashMap<Player, OfflinePlayer> spyPlayers;
     
     public JFUtils(AdminTools plugin) {
         this.plugin = plugin;
         this.specialChatPlayers = new HashMap<>();
+        this.spyPlayers = new HashMap<>();
     }
 
     public void addPlaytimeToOnlinePlayers() {
@@ -66,7 +68,7 @@ public class JFUtils {
         throw new NotImplementedException();
     }
 
-    public void reloadPlaytimeRanks() {
+    public void reloadPlaytimeRanks() throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             YamlConfiguration data = JFFileController.getUserData(p.getUniqueId());
             int playtimeMin = data.getInt("playtime");
@@ -83,7 +85,7 @@ public class JFUtils {
         }
     }
     
-    public void updateVotefly() {
+    public void updateVotefly() throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             YamlConfiguration userData = JFFileController.getUserData(p.getUniqueId());
             int minutes = userData.getInt("votefly");

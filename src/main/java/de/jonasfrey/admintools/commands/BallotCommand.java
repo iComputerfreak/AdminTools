@@ -125,7 +125,7 @@ public class BallotCommand extends JFCommand {
         }
         
         if (!sender.hasPermission(cmd.getPermission() + ".mod")) {
-            sender.sendMessage(JFLiterals.kNoPermissionMessage);
+            sender.sendMessage(cmd.getPermissionMessage());
             return true;
         }
 
@@ -145,7 +145,8 @@ public class BallotCommand extends JFCommand {
         }
         
         if (!sender.hasPermission(cmd.getPermission() + ".mod")) {
-            sender.sendMessage(JFLiterals.kNoPermissionMessage);
+            
+            sender.sendMessage(cmd.getPermissionMessage());
             return true;
         }
 
@@ -165,7 +166,7 @@ public class BallotCommand extends JFCommand {
         }
         
         if (!sender.hasPermission(cmd.getPermission() + ".mod")) {
-            sender.sendMessage(JFLiterals.kNoPermissionMessage);
+            sender.sendMessage(cmd.getPermissionMessage());
             return true;
         }
 

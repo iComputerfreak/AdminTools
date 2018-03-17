@@ -1,7 +1,6 @@
 package de.jonasfrey.admintools;
 
 import com.avaje.ebean.validation.NotNull;
-import de.jonasfrey.admintools.exceptions.JFException;
 import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
 import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
 import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
@@ -24,11 +23,11 @@ public class GroupManagerHandler {
         this.plugin = plugin;
         this.groupManagerPlugin = (GroupManager) plugin.getServer().getPluginManager().getPlugin("GroupManager");
         if (groupManagerPlugin == null) {
-            throw new JFException("Plugin dependency not loaded: GroupManager");
+            throw new RuntimeException("Plugin dependency not loaded: GroupManager");
         }
     }
 
-    public @NotNull User getGMUser(String playerName, String worldName) {
+    public @NotNull User getGMUser(String playerName, String worldName) throws JFUnknownWorldException, JFUnknownPlayerException {
         OverloadedWorldHolder worldHolder = groupManagerPlugin.getWorldsHolder().getWorldData(worldName);
         if (worldHolder == null) {
             throw new JFUnknownWorldException(worldName);
@@ -40,7 +39,7 @@ public class GroupManagerHandler {
         return u;
     }
 
-    public @NotNull Group getGMGroup(String groupName, String worldName) {
+    public @NotNull Group getGMGroup(String groupName, String worldName) throws JFUnknownWorldException, JFUnknownGroupException {
         OverloadedWorldHolder worldHolder = groupManagerPlugin.getWorldsHolder().getWorldData(worldName);
         if (worldHolder == null) {
             throw new JFUnknownWorldException(worldName);
@@ -52,39 +51,39 @@ public class GroupManagerHandler {
         return g;
     }
     
-    public Group getUserGroup(String playerName) {
+    public Group getUserGroup(String playerName) throws JFUnknownWorldException, JFUnknownPlayerException {
         return getUserGroup(playerName, "world");
     }
 
-    public Group getUserGroup(String playerName, String worldName) {
+    public Group getUserGroup(String playerName, String worldName) throws JFUnknownWorldException, JFUnknownPlayerException {
         return getGMUser(playerName, worldName).getGroup();
     }
     
-    public void setUserGroup(String playerName, String groupName) {
+    public void setUserGroup(String playerName, String groupName) throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
         setUserGroup(playerName, groupName, "world");
     }
 
-    public void setUserGroup(String playerName, String groupName, String worldName) {
+    public void setUserGroup(String playerName, String groupName, String worldName) throws JFUnknownWorldException, JFUnknownGroupException, JFUnknownPlayerException {
         Group g = getGMGroup(groupName, worldName);
         User u = getGMUser(playerName, worldName);
         u.setGroup(g);
     }
 
-    public void addUserSubgroup(String playerName, String groupName) {
+    public void addUserSubgroup(String playerName, String groupName) throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
         addUserSubgroup(playerName, groupName, "world");
     }
 
-    public void addUserSubgroup(String playerName, String groupName, String worldName) {
+    public void addUserSubgroup(String playerName, String groupName, String worldName) throws JFUnknownWorldException, JFUnknownGroupException, JFUnknownPlayerException {
         Group g = getGMGroup(groupName, worldName);
         User u = getGMUser(playerName, worldName);
         u.addSubGroup(g);
     }
 
-    public void removeUserSubgroup(String playerName, String groupName) {
+    public void removeUserSubgroup(String playerName, String groupName) throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
         removeUserSubgroup(playerName, groupName, "world");
     }
 
-    public void removeUserSubgroup(String playerName, String groupName, String worldName) {
+    public void removeUserSubgroup(String playerName, String groupName, String worldName) throws JFUnknownWorldException, JFUnknownGroupException, JFUnknownPlayerException {
         Group g = getGMGroup(groupName, worldName);
         User u = getGMUser(playerName, worldName);
         u.removeSubGroup(g);

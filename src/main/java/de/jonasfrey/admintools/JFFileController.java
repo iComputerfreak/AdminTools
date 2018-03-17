@@ -26,7 +26,7 @@ public class JFFileController {
     }
 
     private static File getUserDataFile(UUID uuid) {
-        return new File("AdminTools/userdata/" + uuid.toString() + ".yml");
+        return new File("plugins/AdminTools/userdata/" + uuid.toString() + ".yml");
     }
     
 }

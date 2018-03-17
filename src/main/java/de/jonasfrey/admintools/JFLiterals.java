@@ -16,7 +16,6 @@ public abstract class JFLiterals {
     public static final String kPrefixBad = kPrefix + kBad;
     public static final String kPrefixSpecial = kPrefix + kSpecial;
     
-    public static final String kNoPermissionMessage = kPrefixBad + "You have no permissions to execute this command";
     public static final String kNoBallotRunning = kPrefixBad + "There is no ballot running at the moment.";
     public static final String kVoteSuccessful = kPrefixGood + "Your vote was successful.";
     public static final String kAlreadyVoted = kPrefixGood + "You have already voted for this option.";
@@ -33,25 +32,27 @@ public abstract class JFLiterals {
 
     public static final int kVoteFlyDurationMinutes = 2;
     public static String kWrongTimeFormat = kBad + "Wrong time format. Please use <hours>:<minutes>";
+    public static String kNotSpying = kBad + "You are not spying at anyone right now.";
+    public static String kAlreadySpying = kBad + "You are already spying on someone.";
 
     public static String voteResult(int yesVotes, int noVotes) {
         return kPrefixSpecial + yesVotes + kGood + " Players voted yes and " + kSpecial + noVotes + kGood + " Players voted no.";
     }
     
     public static String dataMe(String type, String value) {
-        return kPrefixGood + "Your " + type + ": " + kSpecial + value;
+        return kPrefixGood + "Your " + type + ": " + kSpecial + value + kGood + ".";
     }
 
     public static String dataGet(String type, String playerName, String value) {
-        return kPrefixSpecial + playerName + kGood + "'s " + type + ": " + kSpecial + value;
+        return kPrefixSpecial + playerName + kGood + "'s " + type + ": " + kSpecial + value + kGood + ".";
     }
 
     public static String dataSet(String type, String playerName, String value) {
-        return kPrefixSpecial + playerName + kGood + "'s " + type + " has been set to " + kSpecial + value;
+        return kPrefixSpecial + playerName + kGood + "'s " + type + " has been set to " + kSpecial + value + kGood + ".";
     }
 
     public static String dataReset(String type, String playerName, String oldValue) {
-        return kPrefixSpecial + playerName + kGood + "'s " + type + " has been reset. The previous " + type + " was " + kSpecial + oldValue;
+        return kPrefixSpecial + playerName + kGood + "'s " + type + " has been reset. The previous " + type + " was " + kSpecial + oldValue + kGood + ".";
     }
 
     public static String dataTopLine(int place, String playerName, String value) {
@@ -60,5 +61,17 @@ public abstract class JFLiterals {
 
     public static String playerDoesNotExist(String playerName) {
         return kPrefixBad + "The player " + kSpecial + playerName + kBad + " does not exist.";
+    }
+
+    public static String spyingAtPlayer(String name) {
+        return kPrefixGood + "You are currently spying at " + kSpecial + name + kGood + ".";
+    }
+
+    public static String removedSpyingAtPlayer(String name) {
+        return kPrefixGood + "You are not spying at " + kSpecial + name + kGood + " anymore.";
+    }
+
+    public static String nowSpying(String name) {
+        return kPrefixGood + "You now see all commands performed by " + kSpecial + name + kGood + ".";
     }
 }

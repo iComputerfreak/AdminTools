@@ -127,7 +127,7 @@ public class DataCommand extends JFCommand {
         return true;
     }
 
-    private boolean dataGet(CommandSender sender, String[] args, Command cmd) {
+    private boolean dataGet(CommandSender sender, String[] args, Command cmd) throws JFUnknownPlayerException {
 
         if (args.length != 2) return false;
 
@@ -136,7 +136,7 @@ public class DataCommand extends JFCommand {
         return true;
     }
 
-    private boolean dataSet(CommandSender sender, String[] args, Command cmd) {
+    private boolean dataSet(CommandSender sender, String[] args, Command cmd) throws JFUnknownPlayerException {
 
         if (args.length != 3) return false;
 
@@ -156,7 +156,7 @@ public class DataCommand extends JFCommand {
         return true;
     }
 
-    private boolean dataReset(CommandSender sender, String[] args, Command cmd) {
+    private boolean dataReset(CommandSender sender, String[] args, Command cmd) throws JFUnknownPlayerException {
 
         if (args.length != 2) return false;
 

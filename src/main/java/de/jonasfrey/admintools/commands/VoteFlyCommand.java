@@ -3,6 +3,9 @@ package de.jonasfrey.admintools.commands;
 import de.jonasfrey.admintools.AdminTools;
 import de.jonasfrey.admintools.JFFileController;
 import de.jonasfrey.admintools.JFLiterals;
+import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
+import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
+import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,7 +34,11 @@ public class VoteFlyCommand extends JFCommand {
             int minutes = userData.getInt("votefly");
             userData.set("votefly", minutes + JFLiterals.kVoteFlyDurationMinutes);
             JFFileController.saveUserData(userData, target.getUniqueId());
-            plugin.getGMHandler().addUserSubgroup(target.getName(), "VoteFly");
+            try {
+                plugin.getGMHandler().addUserSubgroup(target.getName(), "VoteFly");
+            } catch (JFUnknownWorldException | JFUnknownPlayerException | JFUnknownGroupException e) {
+                e.printStackTrace();
+            }
             target.sendMessage(JFLiterals.kVoteflyActivated);
             return true;
         }
