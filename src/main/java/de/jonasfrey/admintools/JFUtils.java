@@ -24,11 +24,13 @@ public class JFUtils {
     private AdminTools plugin;
     HashMap<SpecialChatType, ArrayList<Player>> specialChatPlayers;
     public HashMap<Player, OfflinePlayer> spyPlayers;
+    public HashMap<Player, Integer> playersWaitingForTeleport;
     
     public JFUtils(AdminTools plugin) {
         this.plugin = plugin;
         this.specialChatPlayers = new HashMap<>();
         this.spyPlayers = new HashMap<>();
+        this.playersWaitingForTeleport = new HashMap<>();
     }
 
     public void addPlaytimeToOnlinePlayers() {

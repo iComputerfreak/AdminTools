@@ -31,9 +31,12 @@ public abstract class JFLiterals {
     public static final String kDataTopHeader = "§a----- §6Top Ten §a-----";
 
     public static final int kVoteFlyDurationMinutes = 2;
-    public static String kWrongTimeFormat = kBad + "Wrong time format. Please use <hours>:<minutes>";
-    public static String kNotSpying = kBad + "You are not spying at anyone right now.";
-    public static String kAlreadySpying = kBad + "You are already spying on someone.";
+    public static String kWrongTimeFormat = kPrefixBad + "Wrong time format. Please use <hours>:<minutes>";
+    public static String kNotSpying = kPrefixBad + "You are not spying at anyone right now.";
+    public static String kAlreadySpying = kPrefixBad + "You are already spying on someone.";
+    public static String kAlreadyWaitingForTeleport = kPrefixBad + "You are already waiting for a teleport.";
+    public static String kTeleportingIn5Seconds = kPrefixGood + "You are being teleported in 5 seconds. Don't move!";
+    public static String kTeleporting = kPrefixGood + "Teleporting...";
 
     public static String voteResult(int yesVotes, int noVotes) {
         return kPrefixSpecial + yesVotes + kGood + " Players voted yes and " + kSpecial + noVotes + kGood + " Players voted no.";

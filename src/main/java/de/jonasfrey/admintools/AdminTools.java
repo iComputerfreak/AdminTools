@@ -63,8 +63,8 @@ public class AdminTools extends JavaPlugin implements Listener {
         getCommand("privatechat").setExecutor(new PrivateChatCommand(this));
         getCommand("kills").setExecutor(new KillsCommand(this));
         getCommand("spy").setExecutor(new SpyCommand(this));
-        /*getCommand("leaveskypvp").setExecutor(new JFCommand(this));
-        getCommand("muteall").setExecutor(new JFCommand(this));
+        getCommand("leaveskypvp").setExecutor(new LeaveSkyPvPCommand(this));
+        /*getCommand("muteall").setExecutor(new JFCommand(this));
         getCommand("insultfilter").setExecutor(new JFCommand(this));
         getCommand("fastmessages").setExecutor(new JFCommand(this));
         getCommand("showmessage").setExecutor(new JFCommand(this));
