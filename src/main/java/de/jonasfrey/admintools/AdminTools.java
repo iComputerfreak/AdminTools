@@ -185,7 +185,7 @@ public class AdminTools extends JavaPlugin implements Listener {
                 break;
         }
         
-        worldTag = "{" + worldTag + "}";
+        worldTag = "§7{" + worldTag + "}";
         
         // Apply format
         e.setFormat(worldTag + " §r" + e.getFormat());

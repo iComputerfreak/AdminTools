@@ -35,7 +35,8 @@ public class VoteFlyCommand extends JFCommand {
             userData.set("votefly", minutes + JFLiterals.kVoteFlyDurationMinutes);
             JFFileController.saveUserData(userData, target.getUniqueId());
             try {
-                plugin.getGMHandler().addUserSubgroup(target.getName(), "VoteFly");
+                plugin.getGMHandler().addUserSubgroup(target.getName(), "VoteFly", "world");
+                plugin.getGMHandler().addUserSubgroup(target.getName(), "VoteFly", "survival");
             } catch (JFUnknownWorldException | JFUnknownPlayerException | JFUnknownGroupException e) {
                 e.printStackTrace();
             }

@@ -36,7 +36,7 @@ public abstract class JFLiterals {
             + "will be disabled in " + kSpecial + "10 seconds.";
     public static final String kDataTopHeader = "§a----- §6Top Ten §a-----";
 
-    public static final int kVoteFlyDurationMinutes = 2;
+    public static final int kVoteFlyDurationMinutes = 10;
     public static final String kWrongTimeFormat = kPrefixBad + "Wrong time format. Please use <hours>:<minutes>";
     public static final String kNotSpying = kPrefixBad + "You are not spying at anyone right now.";
     public static final String kAlreadySpying = kPrefixBad + "You are already spying on someone.";

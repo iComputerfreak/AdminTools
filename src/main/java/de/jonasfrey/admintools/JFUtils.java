@@ -84,10 +84,10 @@ public class JFUtils {
         }
     }
     
-    private void updateScoreboard(Player p) {
+    public void updateScoreboard(Player p) {
         
         YamlConfiguration userData = JFFileController.getUserData(p.getUniqueId());
-        if (!userData.getBoolean("scoreboard")) {
+        if (userData.getBoolean("scoreboard-disabled")) {
             return;
         }
         
@@ -105,14 +105,16 @@ public class JFUtils {
 
         if (p.hasPermission("admintools.adminchat")) {
             boolean adminChat = false;
-            if (plugin.getUtils().specialChatPlayers.get(SpecialChatType.ADMIN_CHAT).contains(p)) {
+            ArrayList<Player> players = specialChatPlayers.get(SpecialChatType.ADMIN_CHAT);
+            if (players != null && players.contains(p)) {
                 adminChat = true;
             }
             lines.add((adminChat ? "§a" : "§c") + "Admin Chat " + (adminChat ? "on" : "off"));
         }
         if (p.hasPermission("admintools.teamchat")) {
             boolean teamChat = false;
-            if (plugin.getUtils().specialChatPlayers.get(SpecialChatType.TEAM_CHAT).contains(p)) {
+            ArrayList<Player> players = specialChatPlayers.get(SpecialChatType.TEAM_CHAT);
+            if (players != null && players.contains(p)) {
                 teamChat = true;
             }
             lines.add((teamChat ? "§a" : "§c") + "Team Chat " + (teamChat ? "on" : "off"));
@@ -127,7 +129,7 @@ public class JFUtils {
         }
         // Playtime
         lines.add("§3Playtime");
-        lines.add("§b" + plugin.getUtils().getTimeString(userData.getInt("playtime")) + " hours");
+        lines.add("§b" + getTimeString(userData.getInt("playtime")));
         // Money
         lines.add("§2Money");
         lines.add(String.format("§a%.2f $", money));
@@ -172,7 +174,8 @@ public class JFUtils {
             }
             if (minutes == 1) {
                 // Remove votefly
-                plugin.getGMHandler().removeUserSubgroup(p.getName(), "VoteFly");
+                plugin.getGMHandler().removeUserSubgroup(p.getName(), "VoteFly", "world");
+                plugin.getGMHandler().removeUserSubgroup(p.getName(), "VoteFly", "survival");
                 p.sendMessage(JFLiterals.kVoteFlyDeactivated);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override

@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
 
 public class AdminToolsCommand extends JFCommand {
 
@@ -36,10 +37,17 @@ public class AdminToolsCommand extends JFCommand {
         
         // toggle scoreboard
         YamlConfiguration userData = JFFileController.getUserData(playerSender.getUniqueId());
-        boolean scoreboard = userData.getBoolean("scoreboard");
-        userData.set("scoreboard", !scoreboard);
+        boolean scoreboard = userData.getBoolean("scoreboard-disabled");
+        userData.set("scoreboard-disabled", !scoreboard);
         JFFileController.saveUserData(userData, playerSender.getUniqueId());
-        playerSender.sendMessage(JFLiterals.scoreboardToggled(!scoreboard));
+        // if scoreboard was enabled
+        if (scoreboard) {
+            plugin.getUtils().updateScoreboard(playerSender);
+        } else {
+            playerSender.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+        }
+        
+        playerSender.sendMessage(JFLiterals.scoreboardToggled(scoreboard));
         
         return true;
     }
