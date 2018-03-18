@@ -191,8 +191,11 @@ public class AdminTools extends JavaPlugin implements Listener {
         // Apply format
         e.setFormat(worldTag + " §r" + e.getFormat());
 
+        // Caps filter
         if (e.getMessage().equals(e.getMessage().toUpperCase()) && !p.hasPermission(JFLiterals.kPermissionCapsExempt)) {
-            e.setMessage(e.getMessage().toLowerCase());
+            if (e.getMessage().length() > 5) {
+                e.setMessage(e.getMessage().toLowerCase());
+            }
         }
 
         if (!p.hasPermission(JFLiterals.kPermissionFilterExempt)) {

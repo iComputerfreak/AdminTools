@@ -134,4 +134,9 @@ public abstract class JFLiterals {
     public static String scoreboardToggled(boolean newState) {
         return kPrefixGood + "Your scoreboard is now " + (newState ? "§aenabled" : "§4disabled") + kGood + ".";
     }
+
+    public static String voteFlyActivatedForTarget(String target) {
+        return kPrefixSpecial + target + kGood + " can now use " + kCmd + "/fly" + kGood + " for " + 
+        JFLiterals.kVoteFlyDurationMinutes + " minutes";
+    }
 }

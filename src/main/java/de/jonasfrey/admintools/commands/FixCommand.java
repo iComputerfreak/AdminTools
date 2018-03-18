@@ -41,6 +41,8 @@ public class FixCommand extends JFCommand {
                         return true;
                     }
                     sender.sendMessage(JFLiterals.kHandItemFixed);
+                } else {
+                    sender.sendMessage(JFLiterals.kNoItemInHand);
                 }
                 return true;
             } else {

@@ -41,6 +41,7 @@ public class VoteFlyCommand extends JFCommand {
                 e.printStackTrace();
             }
             target.sendMessage(JFLiterals.kVoteflyActivated);
+            sender.sendMessage(JFLiterals.voteFlyActivatedForTarget(target.getName()));
             return true;
         }
         
