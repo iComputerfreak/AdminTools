@@ -75,6 +75,11 @@ public class JFUtils {
                     player.setPlayerListName("§" + colorChar + p);
                 }
             }
+            // if a player has all permissions, he should get the red (4) color
+            if (player.hasPermission("admintools.tabcolors.4")) {
+                player.setPlayerListName("§4" + p);
+            }
+            
         }
     }
 

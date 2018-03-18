@@ -18,6 +18,6 @@ public class PlaytimeComparator implements Comparator<String> {
 
     @Override
     public int compare(String o1, String o2) {
-        return playtimes.get(o1).compareTo(playtimes.get(o2));
+        return -1 * playtimes.get(o1).compareTo(playtimes.get(o2));
     }
 }

@@ -235,7 +235,7 @@ public class AdminTools extends JavaPlugin implements Listener {
                     }
                 }
                 friendList.replaceFirst(", ", "");
-                if (friends.isEmpty()) {
+                if (friendList.equals("")) {
                     p.sendMessage(JFLiterals.kNoFriendsOnline);
                     return;
                 }

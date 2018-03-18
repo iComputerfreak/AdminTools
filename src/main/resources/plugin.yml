@@ -106,9 +106,5 @@ commands:
         description: Shows the UUID of a player
         permission: admintools.uuidforname
         usage: "§6Usage: §c/uuidforname <player>"
-    clearchat:
-        description: Spams the chat with empty lines
-        permission: admintools.clearchat
-        usage: "§6Usage: §c/clearchat"
 
 permissions: {}

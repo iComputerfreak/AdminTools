@@ -98,13 +98,14 @@ public class DataCommand extends JFCommand {
         // Initialize structures
         OfflinePlayer[] offlinePlayers = plugin.getServer().getOfflinePlayers();
         HashMap<String, Integer> data = new HashMap<>();
-        PlaytimeComparator dataComparator = new PlaytimeComparator(data);
-        TreeMap<String, Integer> dataSorted = new TreeMap<>(dataComparator);
 
         // Get and sort data
         for (OfflinePlayer op : offlinePlayers) {
             data.put(op.getName(), JFFileController.getUserData(op.getUniqueId()).getInt(type.configKey()));
         }
+        
+        PlaytimeComparator dataComparator = new PlaytimeComparator(data);
+        TreeMap<String, Integer> dataSorted = new TreeMap<>(dataComparator);
         dataSorted.putAll(data);
         sender.sendMessage(JFLiterals.kDataTopHeader);
 
@@ -140,6 +141,11 @@ public class DataCommand extends JFCommand {
 
         if (args.length != 3) return false;
 
+        if (!sender.hasPermission(cmd.getPermission() + ".mod")) {
+            sender.sendMessage(cmd.getPermissionMessage());
+            return true;
+        }
+
         OfflinePlayer target = plugin.getUtils().getOfflinePlayer(args[1]);
         
         int data = parseData(sender, args[2]);
@@ -159,6 +165,11 @@ public class DataCommand extends JFCommand {
     private boolean dataReset(CommandSender sender, String[] args, Command cmd) throws JFUnknownPlayerException {
 
         if (args.length != 2) return false;
+
+        if (!sender.hasPermission(cmd.getPermission() + ".mod")) {
+            sender.sendMessage(cmd.getPermissionMessage());
+            return true;
+        }
 
         OfflinePlayer target = plugin.getUtils().getOfflinePlayer(args[1]);
         YamlConfiguration userData = JFFileController.getUserData(target.getUniqueId());
