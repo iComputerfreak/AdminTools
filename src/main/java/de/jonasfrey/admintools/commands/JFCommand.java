@@ -20,12 +20,6 @@ public abstract class JFCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        // TODO: Remove
-        /*if (!sender.hasPermission(cmd.getPermission())) {
-            sender.sendMessage(cmd.getPermissionMessage());
-            return true;
-        }*/
-        
         return true;
     }
     

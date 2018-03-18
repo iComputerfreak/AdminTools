@@ -142,7 +142,7 @@ public class DataCommand extends JFCommand {
         if (args.length != 3) return false;
 
         if (!sender.hasPermission(cmd.getPermission() + ".mod")) {
-            sender.sendMessage(cmd.getPermissionMessage());
+            sender.sendMessage("§cI'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.");
             return true;
         }
 
@@ -167,7 +167,7 @@ public class DataCommand extends JFCommand {
         if (args.length != 2) return false;
 
         if (!sender.hasPermission(cmd.getPermission() + ".mod")) {
-            sender.sendMessage(cmd.getPermissionMessage());
+            sender.sendMessage("§cI'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.");
             return true;
         }
 
