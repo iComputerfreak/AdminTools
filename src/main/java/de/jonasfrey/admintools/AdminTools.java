@@ -5,18 +5,19 @@ import de.jonasfrey.admintools.commands.*;
 import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
 import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
 import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -300,6 +301,21 @@ public class AdminTools extends JavaPlugin implements Listener {
         }
         */
 
+    }
+    
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent e) {
+        if (e.getEntityType().equals(EntityType.ENDER_DRAGON)) {
+            ItemStack egg = new ItemStack(Material.DRAGON_EGG, 1);
+            // Add egg to inventory
+            if (e.getEntity().getKiller().getInventory().firstEmpty() != -1) {
+                e.getEntity().getKiller().getInventory().addItem(egg);
+            } else {
+                // drop the item, if inv full
+                Location l = e.getEntity().getKiller().getLocation();
+                l.getWorld().dropItem(l, egg);
+            }
+        }
     }
 
     @EventHandler
