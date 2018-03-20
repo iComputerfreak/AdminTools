@@ -99,7 +99,7 @@ commands:
         permission: admintools.friends
         usage: "§6Usage: §c/friends < list | add | remove > [player]"
     checkenchantment:
-        description: "Check, if an item has been enchanted with /enchant. Output not guaranteed in both ways!"
+        description: "Check, if an item has been enchanted with /enchant. Output not 100% correct in both ways!"
         permission: admintools.checkenchantment
         usage: "§6Usage: §c/checkenchantment"
     uuidforname:

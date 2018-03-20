@@ -5,9 +5,11 @@ import de.jonasfrey.admintools.commands.*;
 import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
 import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
 import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +24,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -89,6 +92,7 @@ public class AdminTools extends JavaPlugin implements Listener {
         getCommand("helpopreply").setExecutor(new HelpOpReply(this));
         getCommand("friends").setExecutor(new FriendsCommand(this));
         getCommand("uuidforname").setExecutor(new UUIDForNameCommand(this));
+        getCommand("checkenchantment").setExecutor(new CheckEnchantmentCommand(this));
     }
     
     private void registerTimers() {
@@ -278,9 +282,7 @@ public class AdminTools extends JavaPlugin implements Listener {
                 }
             }
         }
-
-        // Currently disabled because NBT Tags suck
-        /*
+        
         if (command.equalsIgnoreCase("/enchant") || command.equalsIgnoreCase("/timtheenchanter:enchant")) {
             // Enchanting item...
             if (!e.getPlayer().hasPermission("enchanter.enchant")) {
@@ -298,11 +300,11 @@ public class AdminTools extends JavaPlugin implements Listener {
             NBTTagCompound compound = (nmsStack.hasTag() ? nmsStack.getTag() : new NBTTagCompound());
             compound.setBoolean("command-enchanted", true);
             compound.setString("enchanter", e.getPlayer().getName());
+            compound.setString("date-time", new Date().toString());
             nmsStack.setTag(compound);
             itemInHand = CraftItemStack.asBukkitCopy(nmsStack);
             e.getPlayer().getInventory().setItemInMainHand(itemInHand);
         }
-        */
 
     }
     

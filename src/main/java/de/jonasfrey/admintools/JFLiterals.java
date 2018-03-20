@@ -54,6 +54,7 @@ public abstract class JFLiterals {
     public static final String kNoFriendsOnline = kPrefixGood + "None of your friends are online right now.";
     public static final String kCommandBlocked = kPrefixBad + "This command has been blocked.";
     public static final String kTeleportAborted = kPrefixBad + "Teleport aborted!";
+    public static final String kNotEnchanted = kPrefixGood + "The item was not enchanted with " + kCmd + "/enchant" + kGood + ".";
 
     public static String voteResult(int yesVotes, int noVotes) {
         return kPrefixSpecial + yesVotes + kGood + " Players voted yes and " + kSpecial + noVotes + kGood + " Players voted no.";
@@ -138,5 +139,9 @@ public abstract class JFLiterals {
     public static String voteFlyActivatedForTarget(String target) {
         return kPrefixSpecial + target + kGood + " can now use " + kCmd + "/fly" + kGood + " for " + 
         JFLiterals.kVoteFlyDurationMinutes + " minutes";
+    }
+
+    public static String itemIsEnchanted(String enchanter, String datetime) {
+        return kPrefixGood + "The item was enchanted with " + kCmd + "/enchant" + kGood + " by " + kSpecial + enchanter + kGood + ". (Timestamp: " + kSpecial + datetime + kGood + ")";
     }
 }
