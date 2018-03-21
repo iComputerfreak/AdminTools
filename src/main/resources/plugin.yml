@@ -29,7 +29,7 @@ commands:
     fix:
         description: Repair the durability of one or all items in your inventory
         permission: admintools.fix
-        usage: "§6Usage: §c/fix [all]"
+        usage: "§6Usage: §c/fix < hand | all >"
     rainbow:
         description: Broadcasts a message in all available colors
         permission: admintools.rainbow

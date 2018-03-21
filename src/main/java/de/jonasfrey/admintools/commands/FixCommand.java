@@ -29,37 +29,49 @@ public class FixCommand extends JFCommand {
         }
 
         Player playerSender = (Player) sender;
-        
-        if (args.length == 0 || (args.length == 1 && args[0].equalsIgnoreCase("all"))) {
-            if (args.length == 0) {
-                // Repair hand
-                /* Reference to item in hand */
-                ItemStack item = playerSender.getInventory().getItemInHand();
-                if (item != null) {
-                    if (!repairItem(item)) {
-                        sender.sendMessage(JFLiterals.kNotRepairable);
-                        return true;
-                    }
-                    sender.sendMessage(JFLiterals.kHandItemFixed);
-                } else {
-                    sender.sendMessage(JFLiterals.kNoItemInHand);
-                }
-                return true;
-            } else {
-                // Repair all
-                for (ItemStack item : playerSender.getInventory().getContents()) {
-                    repairItem(item);
-                }
-                for (ItemStack item : playerSender.getInventory().getArmorContents()) {
-                    repairItem(item);
-                }
 
-                sender.sendMessage(JFLiterals.kAllItemsFixed);
-                return true;
-            }
+        if (args.length != 1) {
+            return false;
+        }
+
+        switch (args[0].toLowerCase()) {
+            case "hand":
+                return fixHand(playerSender, args, cmd);
+            case "all":
+                return fixAll(playerSender, args, cmd);
         }
         
         return false;
+    }
+
+    private boolean fixHand(Player sender, String[] args, Command cmd) {
+        /* Reference to item in hand */
+        ItemStack item = sender.getInventory().getItemInMainHand();
+        if (item != null) {
+            if (!repairItem(item)) {
+                sender.sendMessage(JFLiterals.kNotRepairable);
+                return true;
+            }
+            sender.sendMessage(JFLiterals.kHandItemFixed);
+        } else {
+            sender.sendMessage(JFLiterals.kNoItemInHand);
+        }
+        
+        return true;
+    }
+
+    private boolean fixAll(Player sender, String[] args, Command cmd) {
+        // Repair all
+        for (ItemStack item : sender.getInventory().getContents()) {
+            repairItem(item);
+        }
+        for (ItemStack item : sender.getInventory().getArmorContents()) {
+            repairItem(item);
+        }
+
+        sender.sendMessage(JFLiterals.kAllItemsFixed);
+        
+        return true;
     }
 
     /**
