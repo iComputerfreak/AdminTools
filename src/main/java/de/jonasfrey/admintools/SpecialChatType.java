@@ -29,7 +29,7 @@ public enum SpecialChatType {
     }
     
     public String getPrefix(String playerName) {
-        return color + "§l" + "[" + abbreviation + "] §3" + playerName + "§7: §9";
+        return color + "§l" + "[" + abbreviation + "] §3" + playerName + "§7: " + this.color;
     }
     
 }
