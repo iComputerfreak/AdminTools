@@ -176,19 +176,21 @@ public class JFUtils {
             if (minutes == 0) {
                 // No votefly active
                 continue;
-            }
-            if (minutes == 1) {
+            } else if (minutes == 1) {
                 // Remove votefly
                 plugin.getGMHandler().removeUserSubgroup(p.getName(), "VoteFly", "world");
                 plugin.getGMHandler().removeUserSubgroup(p.getName(), "VoteFly", "survival");
                 p.sendMessage(JFLiterals.kVoteFlyDeactivated);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        p.setAllowFlight(false);
-                        p.setFlying(false);
-                    }
-                }, 20 * 10L);
+                // If the player still has the permission to fly (e.g. is SkyVIP+), don't remove the flight
+                if (!p.hasPermission("essentials.fly")) {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            p.setAllowFlight(false);
+                            p.setFlying(false);
+                        }
+                    }, 20 * 10L);
+                }
             }
             
             minutes -= 1;
@@ -199,30 +201,30 @@ public class JFUtils {
 
     public static boolean isRepairable(Material m) {
         ArrayList<Material> repairables = new ArrayList<>(Arrays.asList(
-                Material.WOOD_SWORD,
-                Material.WOOD_PICKAXE,
-                Material.WOOD_AXE,
-                Material.WOOD_SPADE,
-                Material.WOOD_HOE,
+                Material.WOODEN_SWORD,
+                Material.WOODEN_PICKAXE,
+                Material.WOODEN_AXE,
+                Material.WOODEN_SHOVEL,
+                Material.WOODEN_HOE,
                 Material.STONE_SWORD,
                 Material.STONE_PICKAXE,
                 Material.STONE_AXE,
-                Material.STONE_SPADE,
+                Material.STONE_SHOVEL,
                 Material.STONE_HOE,
                 Material.IRON_SWORD,
                 Material.IRON_PICKAXE,
                 Material.IRON_AXE,
-                Material.IRON_SPADE,
+                Material.IRON_SHOVEL,
                 Material.IRON_HOE,
-                Material.GOLD_SWORD,
-                Material.GOLD_PICKAXE,
-                Material.GOLD_AXE,
-                Material.GOLD_SPADE,
-                Material.GOLD_HOE,
+                Material.GOLDEN_SWORD,
+                Material.GOLDEN_PICKAXE,
+                Material.GOLDEN_AXE,
+                Material.GOLDEN_SHOVEL,
+                Material.GOLDEN_HOE,
                 Material.DIAMOND_SWORD,
                 Material.DIAMOND_PICKAXE,
                 Material.DIAMOND_AXE,
-                Material.DIAMOND_SPADE,
+                Material.DIAMOND_SHOVEL,
                 Material.DIAMOND_HOE,
                 Material.FISHING_ROD,
                 Material.ELYTRA,
@@ -237,10 +239,10 @@ public class JFUtils {
                 Material.IRON_CHESTPLATE,
                 Material.IRON_LEGGINGS,
                 Material.IRON_BOOTS,
-                Material.GOLD_HELMET,
-                Material.GOLD_CHESTPLATE,
-                Material.GOLD_LEGGINGS,
-                Material.GOLD_BOOTS,
+                Material.GOLDEN_HELMET,
+                Material.GOLDEN_CHESTPLATE,
+                Material.GOLDEN_LEGGINGS,
+                Material.GOLDEN_BOOTS,
                 Material.DIAMOND_HELMET,
                 Material.DIAMOND_CHESTPLATE,
                 Material.DIAMOND_LEGGINGS,
@@ -293,13 +295,12 @@ public class JFUtils {
         specialChatPlayers.put(type, players);
     }
 
-    public boolean generatesCobble(int id, Block b) {
+    public boolean generatesCobble(Material material, Block b) {
         BlockFace[] faces = {BlockFace.SELF, BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
-        int mirrorID1 = (id == 8) || (id == 9) ? 10 : 8;
-        int mirrorID2 = (id == 8) || (id == 9) ? 11 : 9;
+        Material mirror = (material == Material.WATER) ? Material.LAVA : Material.WATER;
         for (BlockFace face : faces) {
             Block r = b.getRelative(face, 1);
-            if ((r.getTypeId() == mirrorID1) || (r.getTypeId() == mirrorID2)) {
+            if (r.getBlockData().getMaterial() == mirror) {
                 return true;
             }
         }

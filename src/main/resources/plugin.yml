@@ -5,6 +5,7 @@ author: ${author}
 website: ${url}
 depend: [Essentials, GroupManager]
 softdepend: [McMMO]
+api-version: 1.13
 
 main: ${mainClass}
 
@@ -88,7 +89,11 @@ commands:
     showmessage:
         description: Show raw text to a player
         permission: admintools.showmessage
-        usage: "§6Usage: §c/showmessage <message>"
+        usage: "§6Usage: §c/showmessage <player> <message>"
+    showme:
+        description: Show raw text to yourself
+        permission: admintools.showme
+        usage: "§6Usage: §c/showme <message>"
     helpopreply:
         description: Sends a formatted reply message to a user
         permission: essentials.helpop.receive

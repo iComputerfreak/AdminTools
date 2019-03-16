@@ -5,11 +5,9 @@ import de.jonasfrey.admintools.commands.*;
 import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
 import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
 import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +18,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -89,6 +89,7 @@ public class AdminTools extends JavaPlugin implements Listener {
         getCommand("muteall").setExecutor(new MuteAllCommand(this));
         getCommand("fastmessages").setExecutor(new FastMessagesCommand(this));
         getCommand("showmessage").setExecutor(new ShowMessageCommand(this));
+        getCommand("showme").setExecutor(new ShowMeCommand(this));
         getCommand("helpopreply").setExecutor(new HelpOpReply(this));
         getCommand("friends").setExecutor(new FriendsCommand(this));
         getCommand("uuidforname").setExecutor(new UUIDForNameCommand(this));
@@ -288,7 +289,7 @@ public class AdminTools extends JavaPlugin implements Listener {
             if (!e.getPlayer().hasPermission("enchanter.enchant")) {
                 return;
             }
-            if (messageParts.length > 3) {
+            if (messageParts.length > 3 || messageParts.length == 1) {
                 return;
             }
 
@@ -296,13 +297,17 @@ public class AdminTools extends JavaPlugin implements Listener {
             if (itemInHand == null || itemInHand.getType() == Material.AIR) {
                 return;
             }
-            net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemInHand);
-            NBTTagCompound compound = (nmsStack.hasTag() ? nmsStack.getTag() : new NBTTagCompound());
-            compound.setBoolean("command-enchanted", true);
-            compound.setString("enchanter", e.getPlayer().getName());
-            compound.setString("date-time", new Date().toString());
-            nmsStack.setTag(compound);
-            itemInHand = CraftItemStack.asBukkitCopy(nmsStack);
+    
+    
+            NamespacedKey keyEnchanted = new NamespacedKey(this, "command-enchanted");
+            NamespacedKey keyEnchanter = new NamespacedKey(this, "enchanter");
+            NamespacedKey keyDateTime = new NamespacedKey(this, "date-time");
+            ItemMeta itemMeta = itemInHand.getItemMeta();
+            itemMeta.getCustomTagContainer().setCustomTag(keyEnchanted, ItemTagType.SHORT, (short) 1);
+            itemMeta.getCustomTagContainer().setCustomTag(keyEnchanter, ItemTagType.STRING, e.getPlayer().getName());
+            itemMeta.getCustomTagContainer().setCustomTag(keyDateTime, ItemTagType.STRING, new Date().toString());
+            itemInHand.setItemMeta(itemMeta);
+            
             e.getPlayer().getInventory().setItemInMainHand(itemInHand);
         }
 
@@ -365,12 +370,12 @@ public class AdminTools extends JavaPlugin implements Listener {
     @EventHandler
     public void cobblestoneGeneration(BlockFromToEvent event) {
         if (event.getToBlock().getWorld().getName().equalsIgnoreCase("skyblockworld")) {
-            int id = event.getBlock().getTypeId();
+            Material material = event.getBlock().getBlockData().getMaterial();
             // id is water or lava
-            if ((id >= 8) && (id <= 11)) {
+            if (material == Material.WATER || material == Material.LAVA) {
                 Block b = event.getToBlock();
-                int toid = b.getTypeId();
-                if ((toid == 0) && (utils.generatesCobble(id, b))) {
+                Material toMaterial = b.getBlockData().getMaterial();
+                if ((toMaterial == Material.AIR) && (utils.generatesCobble(material, b))) {
                     b.setType(utils.chooseBlock());
                 }
             }

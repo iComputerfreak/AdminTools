@@ -2,13 +2,14 @@ package de.jonasfrey.admintools.commands;
 
 import de.jonasfrey.admintools.AdminTools;
 import de.jonasfrey.admintools.JFLiterals;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 
 /**
  * @author Jonas Frey
@@ -41,18 +42,19 @@ public class CheckEnchantmentCommand extends JFCommand {
             playerSender.sendMessage(JFLiterals.kNoItemInHand);
             return true;
         }
+    
+        NamespacedKey keyEnchanted = new NamespacedKey(plugin, "command-enchanted");
+        NamespacedKey keyEnchanter = new NamespacedKey(plugin, "enchanter");
+        NamespacedKey keyDateTime = new NamespacedKey(plugin, "date-time");
+        ItemMeta itemMeta = itemInHand.getItemMeta();
+        Short enchanted = itemMeta.getCustomTagContainer().getCustomTag(keyEnchanted, ItemTagType.SHORT);
+        String enchanter = itemMeta.getCustomTagContainer().getCustomTag(keyEnchanter, ItemTagType.STRING);
+        String dateTime = itemMeta.getCustomTagContainer().getCustomTag(keyDateTime, ItemTagType.STRING);
         
-        net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemInHand);
-        NBTTagCompound compound = nmsStack.getTag();
-        if (compound != null) {
-            boolean enchanted = compound.getBoolean("command-enchanted");
-            String enchanter = compound.getString("enchanter");
-            String datetime = compound.getString("date-time");
-            if (enchanted) {
-                playerSender.sendMessage(JFLiterals.itemIsEnchanted(enchanter, datetime));
+            if (enchanted != null && enchanted == 1) {
+                playerSender.sendMessage(JFLiterals.itemIsEnchanted(enchanter, dateTime));
                 return true;
             }
-        }
         
         playerSender.sendMessage(JFLiterals.kNotEnchanted);
         
