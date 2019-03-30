@@ -85,18 +85,6 @@
             <version>1.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>nl.rutgerkok.betterenderchest</groupId>
-            <artifactId>BetterEnderChest</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>LATEST</version>
-        </dependency>
     </dependencies>
 
     <repositories>
