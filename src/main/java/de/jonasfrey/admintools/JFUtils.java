@@ -10,8 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -22,7 +20,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  * @author Jonas Frey
@@ -166,6 +163,9 @@ public class JFUtils {
             if (playtimeMin >= 18000 && plugin.getGMHandler().getUserGroup(p.getName()).getName().equalsIgnoreCase("SkyExperte")) {
                 plugin.getGMHandler().setUserGroup(p.getName(), "SkySuchtie");
             }
+            if (playtimeMin >= 60000 && plugin.getGMHandler().getUserGroup(p.getName()).getName().equalsIgnoreCase("SkySuchtie")) {
+                plugin.getGMHandler().setUserGroup(p.getName(), "SkyLegende");
+            }
         }
     }
     
@@ -293,58 +293,5 @@ public class JFUtils {
         }
         players.add(sender);
         specialChatPlayers.put(type, players);
-    }
-
-    public boolean generatesCobble(Material material, Block b) {
-        BlockFace[] faces = {BlockFace.SELF, BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
-        Material mirror = (material == Material.WATER) ? Material.LAVA : Material.WATER;
-        for (BlockFace face : faces) {
-            Block r = b.getRelative(face, 1);
-            if (r.getBlockData().getMaterial() == mirror) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Material chooseBlock() {
-        double totalDraws = 0.0;
-        Material blockMaterial = null;
-        Random rand = new Random();
-        Integer currentDraw = 0;
-        
-        // Preparing - START
-
-        ArrayList<Integer> values = new ArrayList<>();
-        ArrayList<String> materials = new ArrayList<>();
-        int sum = 0;
-        // Get the total sum of values (times 100)
-        for (String key : plugin.getConfig().getConfigurationSection("ore-gen").getKeys(false)) {
-            double value = plugin.getConfig().getDouble("ore-gen." + key);
-            // get rid of the two decimal places
-            sum += (int) (value * 100.0);
-            values.add(sum);
-            materials.add(key);
-        }
-        
-        // Preparing - END
-
-        // Draw a winner
-        Integer random = rand.nextInt(sum);
-        String winner = null;
-        
-        for (int i = 0; i < values.size(); i++) {
-            // Wait until sum gets bigger than random
-            if (values.get(i) > random) {
-                winner = materials.get(i);
-                break;
-            }
-        }
-        
-        if (winner == null) {
-            throw new RuntimeException("No winner found when selecting a material for the cobble gen");
-        }
-        
-        return Material.getMaterial(winner);
     }
 }

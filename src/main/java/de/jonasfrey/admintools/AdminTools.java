@@ -6,14 +6,12 @@ import de.jonasfrey.admintools.exceptions.JFUnknownGroupException;
 import de.jonasfrey.admintools.exceptions.JFUnknownPlayerException;
 import de.jonasfrey.admintools.exceptions.JFUnknownWorldException;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -60,6 +58,8 @@ public class AdminTools extends JavaPlugin implements Listener {
         registerTimers();
         
         this.getServer().getPluginManager().registerEvents(this, this);
+        // TODO: REMOVE THIS WHEN REMOVING /retrieve
+        //this.getServer().getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("BetterEnderChest"));
     }
     
     @Override
@@ -94,6 +94,7 @@ public class AdminTools extends JavaPlugin implements Listener {
         getCommand("friends").setExecutor(new FriendsCommand(this));
         getCommand("uuidforname").setExecutor(new UUIDForNameCommand(this));
         getCommand("checkenchantment").setExecutor(new CheckEnchantmentCommand(this));
+        getCommand("retrieve").setExecutor(new RetrieveCommand(this));
     }
     
     private void registerTimers() {
@@ -284,12 +285,12 @@ public class AdminTools extends JavaPlugin implements Listener {
             }
         }
         
-        if (command.equalsIgnoreCase("/enchant") || command.equalsIgnoreCase("/timtheenchanter:enchant")) {
+        if (command.equalsIgnoreCase("/enchant") || command.equalsIgnoreCase("/essentials:enchant") || command.equalsIgnoreCase("/essentials:enchantment") || command.equalsIgnoreCase("/enchantment")) {
             // Enchanting item...
-            if (!e.getPlayer().hasPermission("enchanter.enchant")) {
+            if (!e.getPlayer().hasPermission("essentials.enchant")) {
                 return;
             }
-            if (messageParts.length > 3 || messageParts.length == 1) {
+            if (messageParts.length == 1) {
                 return;
             }
 
@@ -364,21 +365,6 @@ public class AdminTools extends JavaPlugin implements Listener {
             utils.playersWaitingForTeleport.remove(e.getPlayer());
             Bukkit.getScheduler().cancelTask(id);
             e.getPlayer().sendMessage(JFLiterals.kTeleportAborted);
-        }
-    }
-
-    @EventHandler
-    public void cobblestoneGeneration(BlockFromToEvent event) {
-        if (event.getToBlock().getWorld().getName().equalsIgnoreCase("skyblockworld")) {
-            Material material = event.getBlock().getBlockData().getMaterial();
-            // id is water or lava
-            if (material == Material.WATER || material == Material.LAVA) {
-                Block b = event.getToBlock();
-                Material toMaterial = b.getBlockData().getMaterial();
-                if ((toMaterial == Material.AIR) && (utils.generatesCobble(material, b))) {
-                    b.setType(utils.chooseBlock());
-                }
-            }
         }
     }
 }

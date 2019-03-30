@@ -111,5 +111,9 @@ commands:
         description: Shows the UUID of a player
         permission: admintools.uuidforname
         usage: "§6Usage: §c/uuidforname <player>"
+    retrieve:
+        description: Retrieve items lost due to the Update.
+        permission: admintools.retrieve
+        usage: "§6Usage: §c/retrieve"
 
 permissions: {}

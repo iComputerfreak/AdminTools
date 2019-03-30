@@ -75,8 +75,8 @@ public class SpyCommand extends JFCommand {
             sender.sendMessage(JFLiterals.kNotSpying);
             return true;
         }
-        plugin.getUtils().spyPlayers.remove(sender);
         sender.sendMessage(JFLiterals.removedSpyingAtPlayer(plugin.getUtils().spyPlayers.get(sender).getName()));
+        plugin.getUtils().spyPlayers.remove(sender);
         
         return true;
     }
