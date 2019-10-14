@@ -94,7 +94,6 @@ public class AdminTools extends JavaPlugin implements Listener {
         getCommand("friends").setExecutor(new FriendsCommand(this));
         getCommand("uuidforname").setExecutor(new UUIDForNameCommand(this));
         getCommand("checkenchantment").setExecutor(new CheckEnchantmentCommand(this));
-        getCommand("retrieve").setExecutor(new RetrieveCommand(this));
     }
     
     private void registerTimers() {
