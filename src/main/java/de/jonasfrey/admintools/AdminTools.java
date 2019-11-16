@@ -29,17 +29,24 @@ import java.util.UUID;
 /**
  * @author Jonas Frey
  * @version 1.0, 10.07.17
+ *
+ * The main class.
  */
-
 public class AdminTools extends JavaPlugin implements Listener {
     
+    /** Whether the server is in debug mode. **/
     private boolean debugMode;
+    /** The utility class instance. **/
     private JFUtils utils;
 
+    /** The instance of the EssentialsX Plugin **/
     private Essentials essentialsPlugin;
+    /** The instance of the GroupManagerHandler **/
     private GroupManagerHandler gmHandler;
     
+    /** The ID of the bukkit scheduler that runs every 10 seconds **/
     private int secondSchedulerID;
+    /** The ID of the bukkit scheduler that runs every minute **/
     private int minuteSchedulerID;
     
     public AdminTools() {
@@ -154,14 +161,14 @@ public class AdminTools extends JavaPlugin implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         
-        // server muted?
+        // Server muted?
         if (utils.chatDisabled && !p.hasPermission(JFLiterals.kPermissionMuteallExempt)) {
             e.setCancelled(true);
             p.sendMessage(JFLiterals.kChatDisabled);
             return;
         }
         
-        // Write in special chat
+        // Write in special chat, if active
         for (SpecialChatType key : utils.specialChatPlayers.keySet()) {
             ArrayList<Player> players = utils.specialChatPlayers.get(key);
             if (players.contains(e.getPlayer())) {
@@ -170,7 +177,7 @@ public class AdminTools extends JavaPlugin implements Listener {
             }
         }
         
-        // Add world prefix
+        // Add world prefix to chat message
         String world = p.getWorld().getName();
         String worldTag = world.substring(0, 1).toUpperCase() + world.substring(1);
         
@@ -193,7 +200,7 @@ public class AdminTools extends JavaPlugin implements Listener {
         
         worldTag = "§7{" + worldTag + "}";
         
-        // Apply format
+        // Append the world tag to the message format
         e.setFormat(worldTag + " §r" + e.getFormat());
 
         // Caps filter
@@ -203,6 +210,7 @@ public class AdminTools extends JavaPlugin implements Listener {
             }
         }
 
+        // Filter insults
         if (!p.hasPermission(JFLiterals.kPermissionFilterExempt)) {
             List<String> insults = getConfig().getStringList("filter");
             String message = e.getMessage();
@@ -221,12 +229,12 @@ public class AdminTools extends JavaPlugin implements Listener {
     public void onPlayerJoined(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         
-        // set join message
+        // Set join message
         String msg = getConfig().getString("messages.join");
         msg = msg.replaceAll("%player%", p.getName());
         e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', msg));
         
-        // update the scoreboard
+        // Update the scoreboard
         utils.updateScoreboards();
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
@@ -243,7 +251,7 @@ public class AdminTools extends JavaPlugin implements Listener {
                         friendList += ", " + op.getName();
                     }
                 }
-                friendList.replaceFirst(", ", "");
+                friendList = friendList.replaceFirst(", ", "");
                 if (friendList.equals("")) {
                     p.sendMessage(JFLiterals.kNoFriendsOnline);
                     return;
@@ -255,10 +263,12 @@ public class AdminTools extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
+        // Set custom leave message
         Player p = e.getPlayer();
         String msg = getConfig().getString("messages.leave");
         msg = msg.replace("%player%", p.getName());
         e.setQuitMessage(ChatColor.translateAlternateColorCodes('&', msg));
+        // Remove from teleport queue and spying list
         utils.spyPlayers.remove(p);
         utils.playersWaitingForTeleport.remove(p);
     }
@@ -268,7 +278,7 @@ public class AdminTools extends JavaPlugin implements Listener {
         String messageParts[] = e.getMessage().split(" ");
         String command = messageParts[0];
 
-        // Block commands
+        // Block commands that list plugins
         if (command.startsWith("/?") || command.startsWith("/bukkit:") || command.startsWith("/minecraft:")) {
             e.getPlayer().sendMessage(JFLiterals.kCommandBlocked);
             e.setCancelled(true);
@@ -284,6 +294,7 @@ public class AdminTools extends JavaPlugin implements Listener {
             }
         }
         
+        // If the command is /enchant, tag the item with an NBT tag
         if (command.equalsIgnoreCase("/enchant") || command.equalsIgnoreCase("/essentials:enchant") || command.equalsIgnoreCase("/essentials:enchantment") || command.equalsIgnoreCase("/enchantment")) {
             // Enchanting item...
             if (!e.getPlayer().hasPermission("essentials.enchant")) {
@@ -315,6 +326,7 @@ public class AdminTools extends JavaPlugin implements Listener {
     
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
+        // Give a dragon egg to the killer of the dragon
         if (e.getEntityType().equals(EntityType.ENDER_DRAGON)) {
             ItemStack egg = new ItemStack(Material.DRAGON_EGG, 1);
             // Add egg to inventory
@@ -330,6 +342,7 @@ public class AdminTools extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
+        // Add a kill to the kill stats and promote the player, if appropriate
         if (event.getEntity().getKiller() != null) {
             Player killer = event.getEntity().getKiller();
             // add kill

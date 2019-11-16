@@ -6,6 +6,8 @@ import java.util.Map;
 /**
  * @author Jonas Frey
  * @version 1.0, 07.08.17
+ *
+ * Compares two playtime values, used for sorting the playtimes (used in /pt top)
  */
 public class PlaytimeComparator implements Comparator<String> {
     

@@ -29,12 +29,15 @@ import java.util.HashMap;
  */
 public class JFUtils {
 
+    /** Instance of the main class. **/
     private AdminTools plugin;
     /** The map of players that have the special chat active. E.g. AdminChat, TeamChat or PersonalChat **/
     HashMap<SpecialChatType, ArrayList<Player>> specialChatPlayers;
-    /** The list of players **/
+    /** The map of players which have an active player set with /spy **/
     public HashMap<Player, OfflinePlayer> spyPlayers;
+    /** The list of players awaiting a teleport after /lsp. **/
     public HashMap<Player, Integer> playersWaitingForTeleport;
+    /** Whether all chat messages are suppressed (/muteall) **/
     public boolean chatDisabled;
     
     public JFUtils(AdminTools plugin) {
@@ -44,7 +47,10 @@ public class JFUtils {
         this.playersWaitingForTeleport = new HashMap<>();
         this.chatDisabled = false;
     }
-
+    
+    /**
+     * Adds one minute of playtime to all online players.
+     */
     public void addPlaytimeToOnlinePlayers() {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             com.earth2me.essentials.User u = plugin.getEssentialsPlugin().getUser(p.getUniqueId());
@@ -56,7 +62,10 @@ public class JFUtils {
             }
         }
     }
-
+    
+    /**
+     * Updates the colors of the player names in the tab list.
+     */
     public void updateTabColors() {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             String p;
@@ -82,7 +91,10 @@ public class JFUtils {
             
         }
     }
-
+    
+    /**
+     * Updates the scoreboards of all online players.
+     */
     public void updateScoreboards() {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             updateScoreboard(p);
