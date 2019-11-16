@@ -1,10 +1,13 @@
 package de.jonasfrey.admintools;
 
-import java.util.UUID; /**
+import java.util.UUID;
+
+/**
  * @author Jonas Frey
  * @version 1.0, 10.07.17
+ *
+ * Contains the permission nodes and messages in text form, as well as some other string literals.
  */
-
 public abstract class JFLiterals {
     
     public static final String kPrefix = "§6[AdminTools] ";

@@ -24,12 +24,15 @@ import java.util.HashMap;
 /**
  * @author Jonas Frey
  * @version 1.0, 11.07.17
+ *
+ * Representa a utility class
  */
-
 public class JFUtils {
 
     private AdminTools plugin;
+    /** The map of players that have the special chat active. E.g. AdminChat, TeamChat or PersonalChat **/
     HashMap<SpecialChatType, ArrayList<Player>> specialChatPlayers;
+    /** The list of players **/
     public HashMap<Player, OfflinePlayer> spyPlayers;
     public HashMap<Player, Integer> playersWaitingForTeleport;
     public boolean chatDisabled;
@@ -86,6 +89,10 @@ public class JFUtils {
         }
     }
     
+    /**
+     * Updates the custom scoreboard for a specific player.
+     * @param p The player
+     */
     public void updateScoreboard(Player p) {
         
         YamlConfiguration userData = JFFileController.getUserData(p.getUniqueId());
@@ -148,7 +155,13 @@ public class JFUtils {
 
         p.setScoreboard(board);
     }
-
+    
+    /**
+     * Checks the playtime of all online players and promotes them if they reached a certain threshold.
+     * @throws JFUnknownWorldException If no world with the name "world" exists
+     * @throws JFUnknownPlayerException If the GroupManagerHandler encountered a problem resolving a username
+     * @throws JFUnknownGroupException If one of the groups below does not exist
+     */
     public void reloadPlaytimeRanks() throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             YamlConfiguration data = JFFileController.getUserData(p.getUniqueId());
@@ -169,9 +182,16 @@ public class JFUtils {
         }
     }
     
+    /**
+     * Updates the votefly permissions for all players on the server. Should be called exactly once per minute
+     * @throws JFUnknownWorldException If no world named "world" or "survival" exists
+     * @throws JFUnknownPlayerException If the GroupManagerHandler encountered an error resolving a player username
+     * @throws JFUnknownGroupException If the group "VoteFly" does not exist
+     */
     public void updateVotefly() throws JFUnknownWorldException, JFUnknownPlayerException, JFUnknownGroupException {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             YamlConfiguration userData = JFFileController.getUserData(p.getUniqueId());
+            // Retrieve the amount of votefly minutes left
             int minutes = userData.getInt("votefly");
             if (minutes == 0) {
                 // No votefly active
@@ -183,6 +203,7 @@ public class JFUtils {
                 p.sendMessage(JFLiterals.kVoteFlyDeactivated);
                 // If the player still has the permission to fly (e.g. is SkyVIP+), don't remove the flight
                 if (!p.hasPermission("essentials.fly")) {
+                    // Deactivate the flight mode in 10 seconds
                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                         @Override
                         public void run() {
@@ -192,13 +213,18 @@ public class JFUtils {
                     }, 20 * 10L);
                 }
             }
-            
+            // Update and save the new votefly minutes
             minutes -= 1;
             userData.set("votefly", minutes);
             JFFileController.saveUserData(userData, p.getUniqueId());
         }
     }
-
+    
+    /**
+     * Checks, if a Material can be repaired
+     * @param m The material
+     * @return Whether the material is repairable
+     */
     public static boolean isRepairable(Material m) {
         ArrayList<Material> repairables = new ArrayList<>(Arrays.asList(
                 Material.WOODEN_SWORD,
@@ -252,16 +278,31 @@ public class JFUtils {
         return repairables.contains(m);
     }
     
+    /**
+     * Executes a command on console level
+     * @param cmd The command string to execute (without /)
+     */
     public void execute(String cmd) {
         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd);
     }
-
+    
+    /**
+     * Returns a formatted time string in the format hh:mm
+     * @param minutes The sum of minutes to format
+     * @return A formatted string in the format "hh:mm hours"
+     */
     public String getTimeString(int minutes) {
         int hours = minutes / 60;
         int newMinutes = minutes % 60;
         return String.format("%02d:%02d hours", hours, newMinutes);
     }
     
+    /**
+     * Find an OfflinePlayer by its username.
+     * @param name The username
+     * @return The OfflinePlayer instance
+     * @throws JFUnknownPlayerException When there exists no offline player with the given username
+     */
     public @NotNull OfflinePlayer getOfflinePlayer(String name) throws JFUnknownPlayerException {
         OfflinePlayer p = plugin.getServer().getOfflinePlayer(name);
         if (p == null) {
@@ -269,7 +310,13 @@ public class JFUtils {
         }
         return p;
     }
-
+    
+    /**
+     * Find an OnlinePlayer by its username.
+     * @param name The username
+     * @return The OnlinePlayer instance
+     * @throws JFUnknownPlayerException When no player with the given is currently online on the server
+     */
     public Player getOnlinePlayer(String name) throws JFUnknownPlayerException {
         Player p = plugin.getServer().getPlayer(name);
         if (p == null) {
@@ -277,21 +324,34 @@ public class JFUtils {
         }
         return p;
     }
-
+    
+    /**
+     * Sends a message into a special chat.
+     * @param type The type of special chat
+     * @param sender The sender of the message
+     * @param message The message string
+     */
     public void writeInSpecialChat(SpecialChatType type, Player sender, String message) {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (p.hasPermission(type.getPermission())) {
+                // Send the message to every player that has permissions to read the chat
                 p.sendMessage(type.getPrefix(sender.getName()) + message);
             }
         }
     }
-
+    
+    /**
+     * Enables the special chat for a specific player.
+     * @param type The type of special chat to activate
+     * @param sender The player to activate the chat for
+     */
     public void enableSpecialChat(SpecialChatType type, Player sender) {
         ArrayList<Player> players = specialChatPlayers.get(type);
         if (players == null) {
             players = new ArrayList<>();
         }
         players.add(sender);
+        // Add the player to specialChatPlayers, so every message they send from now on will be sent into the special chat.
         specialChatPlayers.put(type, players);
     }
 }
